@@ -17,7 +17,6 @@ export default function Home() {
     { name: "BRANCHES", link: "/branches" },
     { name: "CONTACT US", link: "/contact" },
     { name: "ABOUT", link: "/about" },
-    { name: ".", link: "#" },
   ];
 
   if (!mounted) return null; // نتجنب render على السيرفر
@@ -46,7 +45,7 @@ export default function Home() {
       )}
 
       <div
-        className={`fixed top-0 left-0 h-full w-[300px] bg-white shadow-xl z-50 p-6 
+        className={`fixed top- left-0 h-full w-[200px] md:w-[340px] bg-white shadow-xl z-50 p-6 
         flex flex-col
         transform transition-transform duration-700 ease-in-out
         ${openMenu ? "translate-x-0" : "-translate-x-full"}
@@ -55,7 +54,7 @@ export default function Home() {
         <div className="flex justify-end">
           <span
             onClick={() => setOpenMenu(false)}
-            className="text-4xl font-light cursor-pointer mr-8 mt-4 hover:scale-110 transition-transform duration-200"
+            className="text-5xl font-light cursor-pointer mr-8 mt-4 hover:scale-110 transition-transform duration-200"
           >
             ×
           </span>
@@ -83,7 +82,7 @@ export default function Home() {
         </nav>
 
         {/* EXIT BUTTON كما في مكانه الأصلي */}
-        <div className="w-full flex justify-center mt-12">
+        <div className="w-full h-[200px] flex justify-center mt-15">
           <button
             onClick={() => {
               if (typeof window !== "undefined") {
@@ -91,8 +90,8 @@ export default function Home() {
               }
             }}
             className="
-              w-[50%] py-1 h-[30px]
-              rounded-full text-xs tracking-widest font-light
+              md:w-[60%] py-1 md:h-[40px] w-[110px] h-[35px]
+              rounded-full md:text-[20px] tracking-widest font-light
               bg-black text-white
               hover:bg-white hover:text-black hover:border-black
               border border-transparent
@@ -100,7 +99,7 @@ export default function Home() {
               shadow-md hover:shadow-xl
             "
           >
-            EXIT
+            Log out
           </button>
         </div>
       </div>

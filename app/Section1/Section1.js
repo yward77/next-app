@@ -1,8 +1,7 @@
-
 "use client";
 
 import { useState, useEffect, useRef } from "react";
-
+import Marquee from "react-marquee-text";
 
 export default function Section() {
   const images = ["/1.webp", "/2.webp"];
@@ -20,7 +19,6 @@ export default function Section() {
     return () => clearInterval(interval);
   }, []);
 
-  // وظائف السحب بالماوس
   const handleMouseDown = (e) => {
     isDown.current = true;
     startX.current = e.pageX - scrollRef.current.offsetLeft;
@@ -43,7 +41,6 @@ export default function Section() {
     scrollRef.current.scrollLeft = scrollLeftStart.current - walk;
   };
 
-  // وظائف أزرار التمرير
   const scrollLeft = () => {
     if (scrollRef.current) {
       scrollRef.current.scrollBy({ left: -300, behavior: "smooth" });
@@ -58,10 +55,11 @@ export default function Section() {
 
   return (
     <>
-    <br></br>
-    <br></br>
-    <br></br>
+      <br />
+      <br />
+      <br />
 
+      {/* الصور الرئيسية */}
       <div className="w-full">
         <img
           src={images[currentImage]}
@@ -74,8 +72,11 @@ export default function Section() {
           className="hidden md:block w-full h-[100vh] object-cover"
         />
       </div>
+
       <br />
       <br />
+
+      {/* NEW IN */}
       <div className="mt-2.5 text-center">
         <h3 className="md:text-3xl text-xl">NEW IN</h3>
         <br />
@@ -86,12 +87,14 @@ export default function Section() {
           <br />
         </div>
       </div>
+
       <br />
+
+      {/* التمرير الأفقي للصور الصغيرة */}
       <div className="relative mb-10">
-   
         <button
           onClick={scrollLeft}
-          className="hidden  w-[50px] h-[50px] md:block absolute left-0 top-1/2 transform -translate-y-1/2 z-10 bg-black text-white p-2 rounded-full shadow-md hover:bg-gray-800"
+          className="hidden w-[50px] h-[50px] md:block absolute left-0 top-1/2 transform -translate-y-1/2 z-10 bg-black text-white p-2 rounded-full shadow-md hover:bg-gray-800"
         >
           &#8592;
         </button>
@@ -110,16 +113,27 @@ export default function Section() {
           onMouseUp={handleMouseUp}
           onMouseMove={handleMouseMove}
         >
-          {["/1.1.avif","/1.2.avif","/1.3.avif","/1.4.avif","/1.5.avif","/1.6.avif","/1.7.webp","/1.8.webp","/1.9.webp"].map((img, idx) => (
+          {[
+            "/1.1.avif",
+            "/1.2.avif",
+            "/1.3.avif",
+            "/1.4.avif",
+            "/1.5.avif",
+            "/1.6.avif",
+            "/1.7.webp",
+            "/1.8.webp",
+            "/1.9.webp",
+          ].map((img, idx) => (
             <img
               key={idx}
               src={img}
               alt={`Section Image ${idx}`}
-              className="flex-shrink-0 md:w-70 w-60 h-auto rounded-md "
+              className="flex-shrink-0 md:w-70 w-60 h-auto rounded-md"
             />
           ))}
         </div>
       </div>
+
       <style jsx global>{`
         .overflow-x-auto::-webkit-scrollbar {
           display: none;
@@ -129,75 +143,130 @@ export default function Section() {
           scrollbar-width: none;
         }
       `}</style>
-<br></br>
-<br></br>
-<br></br>
-<div className="relative w-full h-[500px] mt-2.5 mb-10">
-  <img
-    src="/Bundles_1 (1).webp"
-    alt="Bottom Image"
-    className="md:w-[100%] w-[100%] md:h-[110%] h-[100%] object-cover"
-  />
 
-  <div className="ml-6 absolute bottom-4 left-4 flex flex-col items-start text-white">
-    <p className="uppercase tracking-wider mb-1 text-sm md:text-base">offers & discount</p>
-    
-    <h1 className="text-4xl md:text-5xl font-bold mb-3">our bundles</h1>
-    <button 
-  className="w-[200px] h-[40px] mb-1.5 text-[25px] border border-white text-white bg-transparent font-semibold hover:bg-white/10 flex items-center justify-center"
-  onClick={() => window.location.href='/shop'}
->
-  shop now
-</button>
+      <br />
+      <br />
+      <br />
 
+      {/* الشريط المنفصل فوق Bundles */}
+      <div className="w-full h-[200px] bg-[#18181f] py-4 mb-13 text-center flex items-center justify-center">
+        <Marquee speed={100}>
+          <h1 className="text-white md:text-6xl text-2xl font-bold text-center uppercase tracking-widest">
+           Discover Luxury Fragrances • Exclusive Scents • Premium Perfumes For You
+          </h1>
+        </Marquee>
+      </div>
 
-  </div>
-</div>
-<br></br>
-<br></br>
-<div className="bg-black  h-[150px]">
-<div className="md:h-80  h-55 flex items-center justify-center bg-[#835a1d] gap-5">
-  <h1 className="text-amber-50 text-center text-[20px] MD:text-4xl font-bold gap-4">DICOVER ELEGANCE<br></br><br></br>PREMIUM QUALITY</h1>
-</div>
+      {/* صورة Bundles */}
+      <div className="relative w-full h-[550px] mb-10">
+        <img
+          src="/Bundles_1 (1).webp"
+          alt="Bottom Image"
+          className="md:w-[100%] w-[100%] md:h-[110%] h-[100%] object-cover"
+        />
 
-</div>
-<br></br>
-<br></br>
-<br></br>
-<br></br>
-<br></br>
-<div>
-<h1 className="md:text-4xl text-2xl text-center font-light md:mt-30 mb-5">our collections</h1>
-<br></br>
-<br></br>
-<br></br>
+        <div className="ml-6 absolute bottom-4 left-4 flex flex-col items-start text-white z-10">
+          <p className="uppercase tracking-wider mb-1 text-sm md:text-base">
+            offers & discount
+          </p>
+          <h1 className="text-4xl md:text-5xl font-bold mb-3">our bundles</h1>
+          <button
+            className="w-[200px] h-[40px] mb-1.5 text-[25px] border border-white text-white bg-transparent font-semibold hover:bg-white/10 flex items-center justify-center"
+            onClick={() => (window.location.href = "/shop")}
+          >
+            shop now
+          </button>
+        </div>
+      </div>
 
-<div className=" flex gap-10 justify-center flex-wrap">
-<img src="/3.1.webp" alt="Collections" className="w-[320px]  md:w-[500px] animate__animated animate__fadeIn wow " />
-<img src="/3.2.webp" alt="Collections" className="w-[320px]  md:w-[500px] animate__animated animate__fadeIn wow " />
-<img src="/3.3.webp" alt="Collections" className="w-[320px]  md:w-[500px] animate__animated animate__fadeIn wow " />
+      {/* الشريط المنفصل فوق Bundles */}
+      <div className="w-full h-[200px] bg-[#18181f]  py-4 md:mt-25 text-center flex items-center justify-center">
+        <Marquee direction="right" speed={100}>
 
-</div>
-<br></br>
-<br></br>
+          <h1 className="text-white md:text-6xl text-2xl font-bold text-center uppercase tracking-widest">
+           Discover Luxury Fragrances • Exclusive Scents • Premium Perfumes For You
+          </h1>
+        </Marquee>
+      </div>
 
-</div>
-<br></br>
-<br></br>
-<br></br><div className="flex flex-wrap justify-center gap-5 mb-10 border-t-black pt-10">
-  <img src="/2.1.png" alt="Footer Image" className="w-40 md:w-100 shadow-2xl mb-4 border-2 border-gray-300" />
-  <img src="/2.2.png" alt="Footer Image" className="w-40 md:w-100 shadow-2xl mb-4 border-2 border-gray-300" />
-  <img src="/2.3 (2).png" alt="Footer Image" className="w-40 md:w-100 shadow-2xl mb-4 border-2 border-gray-300" />
-</div>
+      <br />
+      <br />
 
-<br></br>
-<br></br>
-<br></br>
-<br></br>
+      {/* اكتشف الأناقة */}
+      <div className="bg-black h-[150px]">
+        <div className="md:h-80 h-55 flex items-center justify-center bg-[#835a1d] gap-5">
+          <h1 className="text-amber-50 text-center text-[20px] md:text-4xl font-bold gap-4">
+            DICOVER ELEGANCE
+            <br />
+            <br />
+            PREMIUM QUALITY
+          </h1>
+        </div>
+      </div>
 
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
 
+      {/* مجموعتنا */}
+      <div>
+        <h1 className="md:text-4xl text-2xl text-center font-light md:mt-30 mb-5">
+          our collections
+        </h1>
+        <br />
+        <br />
+        <br />
 
+        <div className="flex gap-10 justify-center flex-wrap">
+          <img
+            src="/3.1.webp"
+            alt="Collections"
+            className="w-[320px] md:w-[500px] animate__animated animate__fadeIn wow"
+          />
+          <img
+            src="/3.2.webp"
+            alt="Collections"
+            className="w-[320px] md:w-[500px] animate__animated animate__fadeIn wow"
+          />
+          <img
+            src="/3.3.webp"
+            alt="Collections"
+            className="w-[320px] md:w-[500px] animate__animated animate__fadeIn wow"
+          />
+        </div>
+        <br />
+        <br />
+      </div>
 
+      <br />
+      <br />
+      <br />
+
+      {/* صور Footer */}
+      <div className="flex flex-wrap justify-center gap-5 mb-10 border-t-black pt-10">
+        <img
+          src="/2.1.png"
+          alt="Footer Image"
+          className="w-40 md:w-100 shadow-2xl mb-4 border-2 border-gray-300"
+        />
+        <img
+          src="/2.2.png"
+          alt="Footer Image"
+          className="w-40 md:w-100 shadow-2xl mb-4 border-2 border-gray-300"
+        />
+        <img
+          src="/2.3 (2).png"
+          alt="Footer Image"
+          className="w-40 md:w-100 shadow-2xl mb-4 border-2 border-gray-300"
+        />
+      </div>
+
+      <br />
+      <br />
+      <br />
+      <br />
     </>
   );
 }
