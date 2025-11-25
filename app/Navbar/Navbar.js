@@ -8,7 +8,7 @@ export default function Home() {
   const router = useRouter();
 
   useEffect(() => {
-    setMounted(true); // نحدد أن الكومبوننت تم تركيبه على العميل
+    setMounted(true);
   }, []);
 
   const items = [
@@ -19,7 +19,7 @@ export default function Home() {
     { name: "ABOUT", link: "/about" },
   ];
 
-  if (!mounted) return null; // نتجنب render على السيرفر
+  if (!mounted) return null; 
 
   return (
     <>

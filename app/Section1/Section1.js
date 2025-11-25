@@ -1,5 +1,6 @@
 "use client";
 
+
 import { useState, useEffect, useRef } from "react";
 import Marquee from "react-marquee-text";
 
@@ -55,23 +56,21 @@ export default function Section() {
 
   return (
     <>
-      <br />
-      <br />
-      <br />
+<div className="relative w-full h-[500px] md:h-[100vh] overflow-hidden bg-black mt-7">
+  {images.map((img, index) => (
+    <img
+      key={index}
+      src={img}
+      alt="Slider"
+      className={`
+        absolute inset-0 w-full h-full object-cover
+        transition-opacity duration-[2500ms] ease-in-out
+        ${index === currentImage ? "opacity-100" : "opacity-0"}
+      `}
+    />
+  ))}
+</div>
 
-      {/* الصور الرئيسية */}
-      <div className="w-full">
-        <img
-          src={images[currentImage]}
-          alt="Section Image"
-          className="w-full h-[500px] object-cover md:hidden"
-        />
-        <img
-          src={images[currentImage]}
-          alt="Section Image"
-          className="hidden md:block w-full h-[100vh] object-cover"
-        />
-      </div>
 
       <br />
       <br />

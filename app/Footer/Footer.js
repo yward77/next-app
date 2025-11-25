@@ -56,12 +56,12 @@ export default function Footer() {
 
         {/* MORE INFORMATION */}
         <div>
-          <h3 className="text-xs tracking-[0.25em] mb-6 text-gray-300">Our Features</h3>
+          <h3 className="text-3xl tracking-[0.25em] mb-6 text-gray-300">Our Features</h3>
           <ul className="space-y-3 text-sm leading-6">
-            <li className="hover:underline cursor-pointer">Authentic Perfumes</li>
-            <li className="hover:underline cursor-pointer">Wide Selection</li>
-            <li className="hover:underline cursor-pointer">Personal Consultation</li>
-            <li className="hover:underline cursor-pointer">Unique Experience</li>
+            <li className="text-2xl cursor-pointer">Authentic Perfumes</li>
+            <li className="text-2xl cursor-pointer">Wide Selection</li>
+            <li className="text-2xl cursor-pointer">Personal Consultation</li>
+            <li className="text-2xl cursor-pointer">Unique Experience</li>
           </ul>
         </div>
 

@@ -8,7 +8,11 @@ export default function Video() {
   const [videoSrc, setVideoSrc] = useState("/intro.mp4");
 
   useEffect(() => {
-    if (typeof window === "undefined") return; // تأكد من التشغيل فقط على العميل
+    if (typeof window === "undefined") return;
+
+    // ✔️ اذا كان الفيديو اشتغل قبل — ما يعيد يشتغل
+    const hasPlayed = localStorage.getItem("introPlayed");
+    if (hasPlayed) return;
 
     const updateVideoSrc = () => {
       const isMobile = window.innerWidth <= 768;
@@ -19,7 +23,12 @@ export default function Video() {
     setShowVideo(true);
 
     const fadeTimer = setTimeout(() => setFadeOut(true), 3000);
-    const hideTimer = setTimeout(() => setShowVideo(false), 4000);
+    const hideTimer = setTimeout(() => {
+      setShowVideo(false);
+
+      // ✔️ نخزن علامة الفيديو اشتغل مرة
+      localStorage.setItem("introPlayed", "true");
+    }, 4000);
 
     window.addEventListener("resize", updateVideoSrc);
 
@@ -38,12 +47,7 @@ export default function Video() {
         fadeOut ? "opacity-0" : "opacity-100"
       }`}
     >
-      <video
-        src={videoSrc}
-        autoPlay
-        muted
-        className="w-full h-full object-cover"
-      />
+      <video src={videoSrc} autoPlay muted className="w-full h-full object-cover" />
     </div>
   );
 }
