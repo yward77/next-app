@@ -1,6 +1,7 @@
 "use client";
 import { useState } from "react";
 import Link from "next/link";
+import { FaFacebookF, FaTwitter, FaInstagram } from "react-icons/fa";
 
 export default function Footer() {
   const [name, setName] = useState("");
@@ -66,24 +67,12 @@ export default function Footer() {
         </div>
 
         {/* SOCIAL MEDIA */}
-        <div className="flex flex-col items-start md:items-end ">
-          <h3 className="text-xs mr-[120px] tracking-[0.25em] mb-6 text-gray-300">FOLLOW US</h3>
-          <div className="flex gap-7 mt-9">
-            <a href="https://www.facebook.com" target="_blank" rel="noopener noreferrer">
-              <img src="/facebook-app-symbol.png" alt="Facebook" className="md:w-[60px] md:h-[60px] hover:opacity-70 w-[40px] h-[40px]" />
-            </a>
-            <a href="https://www.instagram.com" target="_blank" rel="noopener noreferrer">
-              <img src="/instagram.png" alt="Instagram" className="md:w-[60px] md:h-[60px] hover:opacity-70 w-[40px] h-[40px]" />
-            </a>
-            <a href="https://www.twitter.com" target="_blank" rel="noopener noreferrer">
-              <img src="/twitter.png" alt="Twitter" className="md:w-[60px] md:h-[60px] hover:opacity-70 w-[40px] h-[40px]" />
-            </a>
-            <a href="https://www.tiktok.com" target="_blank" rel="noopener noreferrer">
-              <img src="/tiktok.png" alt="LinkedIn" className="md:w-[60px] md:h-[60px] hover:opacity-70 w-[40px] h-[40px]" />
-            </a>
-          </div>
-        </div>
-
+       {/* أيقونات وسائل التواصل الاجتماعي */}
+             <div className="flex justify-center gap-8 mb-8 text-5xl md:mt-30">
+               <FaFacebookF className="text-blue-600 cursor-pointer hover:scale-110 transition-transform" />
+               <FaTwitter className="text-blue-400 cursor-pointer hover:scale-110 transition-transform" />
+               <FaInstagram className="text-pink-500 cursor-pointer hover:scale-110 transition-transform" />
+             </div>
       </div>
 
       <div className="max-w-7xl mx-auto mt-20 flex flex-col md:flex-row justify-between items-center text-gray-400 text-sm w-[50px] h-[50px]">

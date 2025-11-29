@@ -6,6 +6,7 @@ import Footer from "./Footer/Footer";
 export default function Home() {
   return (
     <>
+    
     <Video />
     <Navbar />
     <Section1 />
