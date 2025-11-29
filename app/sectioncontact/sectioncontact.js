@@ -72,9 +72,9 @@ export default function Contact() {
 
         {/* أيقونات وسائل التواصل الاجتماعي */}
         <div className="flex justify-center gap-8 mb-8 text-5xl">
-          <FaFacebookF className="text-blue-600 cursor-pointer hover:scale-110 transition-transform" />
-          <FaTwitter className="text-blue-400 cursor-pointer hover:scale-110 transition-transform" />
-          <FaInstagram className="text-pink-500 cursor-pointer hover:scale-110 transition-transform" />
+          <FaFacebookF className="text-gray-500 cursor-pointer hover:scale-110 transition-transform" />
+          <FaTwitter className="text-gray-500 cursor-pointer hover:scale-110 transition-transform" />
+          <FaInstagram className="text-gray-500 cursor-pointer hover:scale-110 transition-transform" />
         </div>
 
         {/* معلومات الاتصال */}
@@ -98,20 +98,20 @@ export default function Contact() {
     name="name"
     placeholder="Your Name"
     required
-    className="border border-white/50 p-4 w-full rounded-xl focus:outline-none focus:ring-2 focus:ring-white/70 focus:border-transparent text-lg text-black placeholder-gray shadow-lg"
+    className="  p-4 w-full rounded-xl focus:outline-none focus:ring-2 focus:ring-white/70 focus:border-transparent text-lg text-black placeholder-gray "
   />
   <input
     type="email"
     name="email"
     placeholder="Email"
     required
-    className="border border-white/50 p-4 w-full rounded-xl focus:outline-none focus:ring-2 focus:ring-white/70 focus:border-transparent text-lg text-black placeholder-gray shadow-lg"
+    className="border-b-2 border-white/50 p-4 w-full rounded-xl focus:outline-none focus:ring-2 focus:ring-white/70 focus:border-transparent text-lg text-black placeholder-gray "
   />
   <textarea
     name="message"
     placeholder="Your Message"
     required
-    className="border border-white/50 p-4 w-full rounded-xl focus:outline-none focus:ring-2 focus:ring-white/70 focus:border-transparent text-lg text-black placeholder-gray shadow-lg h-48 resize-none"
+    className="border border-white/50 p-4 w-full rounded-xl focus:outline-none focus:ring-2 focus:ring-white/70 focus:border-transparent text-lg text-black placeholder-gray  h-48 resize-none"
   ></textarea>
   <button
     type="submit"

@@ -57,21 +57,21 @@ export default function Footer() {
 
         {/* MORE INFORMATION */}
         <div>
-          <h3 className="text-3xl tracking-[0.25em] mb-6 text-gray-300">Our Features</h3>
+          <h3 className="text-2xl tracking-[0.25em] mb-6 text-gray-300">Our Features</h3>
           <ul className="space-y-3 text-sm leading-6">
-            <li className="text-2xl cursor-pointer">Authentic Perfumes</li>
-            <li className="text-2xl cursor-pointer">Wide Selection</li>
-            <li className="text-2xl cursor-pointer">Personal Consultation</li>
-            <li className="text-2xl cursor-pointer">Unique Experience</li>
+            <li className="text-[20px] cursor-pointer">Authentic Perfumes</li>
+            <li className="text-[20px] cursor-pointer">Wide Selection</li>
+            <li className="text-[20px] cursor-pointer">Personal Consultation</li>
+            <li className="text-[20px] cursor-pointer">Unique Experience</li>
           </ul>
         </div>
 
         {/* SOCIAL MEDIA */}
        {/* أيقونات وسائل التواصل الاجتماعي */}
              <div className="flex justify-center gap-8 mb-8 text-5xl md:mt-30">
-               <FaFacebookF className="text-blue-600 cursor-pointer hover:scale-110 transition-transform" />
-               <FaTwitter className="text-blue-400 cursor-pointer hover:scale-110 transition-transform" />
-               <FaInstagram className="text-pink-500 cursor-pointer hover:scale-110 transition-transform" />
+             <FaFacebookF className="text-gray-300 cursor-pointer hover:scale-110 transition-transform  w-[20px]" />
+                <FaTwitter className="text-gray-300 cursor-pointer hover:scale-110 transition-transform w-[30px]" />
+             <FaInstagram className="text-gray-300 cursor-pointer hover:scale-110 transition-transform  w-[30px]" />
              </div>
       </div>
 

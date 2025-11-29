@@ -22,7 +22,7 @@ export default function Video() {
     updateVideoSrc();
     setShowVideo(true);
 
-    const fadeTimer = setTimeout(() => setFadeOut(true), 3000);
+    const fadeTimer = setTimeout(() => setFadeOut(true), 5000);
     const hideTimer = setTimeout(() => {
       setShowVideo(false);
 
