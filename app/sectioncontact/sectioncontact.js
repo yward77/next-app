@@ -63,7 +63,7 @@ export default function Contact() {
         </div>
 
         {/* شريط متحرك */}
-        <Marquee gradient={false} speed={50} className="mb-38 mt-20 bg-gray-100 p-4 rounded-lg">
+        <Marquee gradient={false} speed={50} className="mb-38 mt-20 bg-white p-4 rounded-lg">
           <img src="/1.1.avif" alt="logo1" className="w-[300px] h-[300px] mx-4 object-cover" />
           <img src="/1.2.avif" alt="logo2" className="w-[300px] h-[300px] mx-4 object-cover" />
           <img src="/1.3.avif" alt="logo3" className="w-[300px] h-[300px] mx-4 object-cover" />
