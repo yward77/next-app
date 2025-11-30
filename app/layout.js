@@ -1,8 +1,8 @@
 import './globals.css';
 export const metadata = {
+
   title: "Siwa Fragrances",
-  description:
-    "Discover the elegance of Siwa Fragrances — luxury scents crafted with passion.",
+  description: "Discover the elegance of Siwa Fragrances — luxury scents crafted with passion.",
   keywords: [
     "Siwa",
     "Fragrances",
@@ -17,14 +17,13 @@ export const metadata = {
 
   openGraph: {
     title: "Siwa Fragrances",
-    description:
-      "Luxury meets tradition in every scent — Siwa Fragrances.",
+    description: "Luxury meets tradition in every scent — Siwa Fragrances.",
     url: "https://your-domain.com",
     siteName: "Siwa Fragrances",
     type: "website",
     images: [
       {
-        url: "/logo5-new.avif",
+        url: "/logo5.avif",
         width: 1200,
         height: 630,
         alt: "Siwa Fragrances",
@@ -35,17 +34,17 @@ export const metadata = {
   twitter: {
     card: "summary_large_image",
     title: "Siwa Fragrances",
-    description:
-      "Discover the elegance of Siwa Fragrances — luxury scents crafted with passion.",
-    images: ["/logo5-new.avif"],
+    description: "Discover the elegance of Siwa Fragrances — luxury scents crafted with passion.",
+    images: ["/logo5.avif"],
   },
 
   icons: {
-    icon: "/logo5-new.avif",
-    shortcut: "/logo5-new.avif",
-    apple: "/logo5-new.avif",
+    icon: "/logo5.avif",
+    shortcut: "/logo5.avif",
+    apple: "/logo5.avif",
   },
 };
+
 
 export default function RootLayout({ children }) {
   return (
