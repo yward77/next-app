@@ -89,7 +89,7 @@ export default function Contact() {
             <FaMapMarkerAlt className="text-xl" /> 123 Street, City, Country
           </div>
         </div>
-
+ 
         {/* الفورم */}
 
 <form onSubmit={handleSubmit} className="flex flex-col gap-6 max-w-xl mx-auto bg-white/20 backdrop-blur-md p-8 rounded-3-lg mt-28">
