@@ -129,7 +129,7 @@ export default function Section() {
           ))}
         </div>
       </div>
-
+ 
       <style jsx global>{`
         .overflow-x-auto::-webkit-scrollbar {
           display: none;
