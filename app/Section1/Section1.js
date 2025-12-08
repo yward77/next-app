@@ -1,6 +1,5 @@
 "use client";
 
-
 import { useState, useEffect, useRef } from "react";
 import Marquee from "react-marquee-text";
 
@@ -12,28 +11,38 @@ export default function Section() {
   const startX = useRef(0);
   const scrollLeftStart = useRef(0);
 
+  // تغيير الصورة الكبيرة تلقائيًا
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentImage((prev) => (prev + 1) % images.length);
     }, 3000);
-
     return () => clearInterval(interval);
   }, []);
 
+  // التمرير الأفقي التلقائي للصور الصغيرة
+  useEffect(() => {
+    const scrollInterval = setInterval(() => {
+      if (scrollRef.current) {
+        scrollRef.current.scrollBy({ left: 2, behavior: "smooth" });
+        if (
+          scrollRef.current.scrollLeft + scrollRef.current.clientWidth >=
+          scrollRef.current.scrollWidth
+        ) {
+          scrollRef.current.scrollTo({ left: 0, behavior: "smooth" });
+        }
+      }
+    }, 20);
+    return () => clearInterval(scrollInterval);
+  }, []);
+
+  // سحب بالماوس
   const handleMouseDown = (e) => {
     isDown.current = true;
     startX.current = e.pageX - scrollRef.current.offsetLeft;
     scrollLeftStart.current = scrollRef.current.scrollLeft;
   };
-
-  const handleMouseLeave = () => {
-    isDown.current = false;
-  };
-
-  const handleMouseUp = () => {
-    isDown.current = false;
-  };
-
+  const handleMouseLeave = () => { isDown.current = false; };
+  const handleMouseUp = () => { isDown.current = false; };
   const handleMouseMove = (e) => {
     if (!isDown.current) return;
     e.preventDefault();
@@ -42,12 +51,12 @@ export default function Section() {
     scrollRef.current.scrollLeft = scrollLeftStart.current - walk;
   };
 
+  // أزرار التمرير
   const scrollLeft = () => {
     if (scrollRef.current) {
       scrollRef.current.scrollBy({ left: -300, behavior: "smooth" });
     }
   };
-
   const scrollRight = () => {
     if (scrollRef.current) {
       scrollRef.current.scrollBy({ left: 300, behavior: "smooth" });
@@ -56,24 +65,23 @@ export default function Section() {
 
   return (
     <>
-<div className="relative w-full h-[500px] md:h-[100vh] overflow-hidden bg-black mt-7">
-  {images.map((img, index) => (
-    <img
-      key={index}
-      src={img}
-      alt="Slider"
-      className={`
-        absolute inset-0 w-full h-full object-cover
-        transition-opacity duration-[2500ms] ease-in-out
-        ${index === currentImage ? "opacity-100" : "opacity-0"}
-      `}
-    />
-  ))}
-</div>
+      {/* الصور الكبيرة */}
+      <div className="relative w-full h-[500px] md:h-[100vh] overflow-hidden bg-black mt-7">
+        {images.map((img, index) => (
+          <img
+            key={index}
+            src={img}
+            alt="Slider"
+            className={`
+              absolute inset-0 w-full h-full object-cover
+              transition-opacity duration-[2500ms] ease-in-out
+              ${index === currentImage ? "opacity-100" : "opacity-0"}
+            `}
+          />
+        ))}
+      </div>
 
-
-      <br />
-      <br />
+      <br /><br />
 
       {/* NEW IN */}
       <div className="mt-2.5 text-center">
@@ -91,18 +99,7 @@ export default function Section() {
 
       {/* التمرير الأفقي للصور الصغيرة */}
       <div className="relative mb-10">
-        <button
-          onClick={scrollLeft}
-          className="hidden w-[50px] h-[50px] md:block absolute left-0 top-1/2 transform -translate-y-1/2 z-10 bg-black text-white p-2 rounded-full shadow-md hover:bg-gray-800"
-        >
-          &#8592;
-        </button>
-        <button
-          onClick={scrollRight}
-          className="hidden w-[50px] h-[50px] md:block absolute right-0 top-1/2 transform -translate-y-1/2 z-10 bg-black text-white p-2 rounded-full shadow-md hover:bg-gray-800"
-        >
-          &#8594;
-        </button>
+      
 
         <div
           ref={scrollRef}
@@ -143,20 +140,18 @@ export default function Section() {
         }
       `}</style>
 
-      <br />
-      <br />
-      <br />
+      <br /><br /><br />
 
       {/* الشريط المنفصل فوق Bundles */}
       <div className="w-full h-[200px] bg-[#18181f] py-4 mb-13 text-center flex items-center justify-center">
         <Marquee speed={100}>
           <h1 className="text-white md:text-6xl text-2xl font-bold text-center uppercase tracking-widest">
-           Discover Luxury Fragrances • Exclusive Scents • Premium Perfumes For You
+            Discover Luxury Fragrances • Exclusive Scents • Premium Perfumes For You
           </h1>
         </Marquee>
       </div>
 
-      {/* صورة Bundles */}
+      {/* Bundles */}
       <div className="relative w-full h-[550px] mb-10">
         <img
           src="/Bundles_1 (1).webp"
@@ -178,45 +173,36 @@ export default function Section() {
         </div>
       </div>
 
-      {/* الشريط المنفصل فوق Bundles */}
-      <div className="w-full h-[200px] bg-[#18181f]  py-4 md:mt-25 text-center flex items-center justify-center">
+      {/* شريط أسفل Bundles */}
+      <div className="w-full h-[200px] bg-[#18181f] py-4 md:mt-25 text-center flex items-center justify-center">
         <Marquee direction="right" speed={100}>
-
           <h1 className="text-white md:text-6xl text-2xl font-bold text-center uppercase tracking-widest">
-           Discover Luxury Fragrances • Exclusive Scents • Premium Perfumes For You
+            Discover Luxury Fragrances • Exclusive Scents • Premium Perfumes For You
           </h1>
         </Marquee>
       </div>
 
-      <br />
-      <br />
+      <br /><br />
 
       {/* اكتشف الأناقة */}
       <div className="bg-black h-[150px]">
         <div className="md:h-80 h-55 flex items-center justify-center bg-[#835a1d] gap-5">
           <h1 className="text-amber-50 text-center text-[20px] md:text-4xl font-bold gap-4">
             DICOVER ELEGANCE
-            <br />
-            <br />
+            <br /><br />
             PREMIUM QUALITY
           </h1>
         </div>
       </div>
 
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
+      <br /><br /><br /><br /><br />
 
       {/* مجموعتنا */}
       <div>
         <h1 className="md:text-4xl text-2xl text-center font-light md:mt-30 mb-5">
           our collections
         </h1>
-        <br />
-        <br />
-        <br />
+        <br /><br /><br />
 
         <div className="flex gap-10 justify-center flex-wrap">
           <img
@@ -235,13 +221,10 @@ export default function Section() {
             className="w-[320px] md:w-[500px] animate__animated animate__fadeIn wow"
           />
         </div>
-        <br />
-        <br />
+        <br /><br />
       </div>
 
-      <br />
-      <br />
-      <br />
+      <br /><br /><br />
 
       {/* صور Footer */}
       <div className="flex flex-wrap justify-center gap-5 mb-10 border-t-black pt-10">
@@ -262,10 +245,7 @@ export default function Section() {
         />
       </div>
 
-      <br />
-      <br />
-      <br />
-      <br />
+      <br /><br /><br /><br />
     </>
   );
 }

@@ -1,17 +1,54 @@
 "use client";
 import Marquee from "react-fast-marquee";
+import { useEffect, useState, useRef } from "react";
 
 export default function About() {
+  const targets = [10, 50000, 100]; // الأرقام النهائية
+  const [numbers, setNumbers] = useState([0, 0, 0]);
+  const sectionRef = useRef(null);
+  const [startCounting, setStartCounting] = useState(false);
+
+  // تفعيل العد عند ظهور القسم في الشاشة
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setStartCounting(true);
+          observer.disconnect();
+        }
+      },
+      { threshold: 0.5 }
+    );
+    if (sectionRef.current) observer.observe(sectionRef.current);
+  }, []);
+
+  // العداد
+  useEffect(() => {
+    if (!startCounting) return;
+
+    const intervals = targets.map((target, idx) => {
+      return setInterval(() => {
+        setNumbers((prev) => {
+          const nextNumbers = [...prev];
+          if (nextNumbers[idx] < target) {
+            const increment = Math.ceil(target / 20); // زيادة صغيرة لتأخذ وقت أطول
+            nextNumbers[idx] = Math.min(nextNumbers[idx] + increment, target);
+          }
+          return nextNumbers;
+        });
+      }, 50); // سرعة أبطأ
+    });
+
+    return () => intervals.forEach(clearInterval);
+  }, [startCounting]);
+
   return (
     <>
       <img src="/About_Us.webp" className="w-full h-[400px] object-cover mt-30" />
 
       <div className="w-full">
-
         <div className="max-w-3xl mx-auto px-6 py-20">
-          <h1 className="text-center text-3xl tracking-[4px] font-medium mb-10">
-            ABOUT US
-          </h1>
+          <h1 className="text-center text-3xl tracking-[4px] font-medium mb-10">ABOUT US</h1>
 
           <p className="text-gray-700 leading-7 mb-6">
             Siwa Fragrances is an esteemed Egyptian maison, weaving heritage and identity into every bottle. 
@@ -32,16 +69,15 @@ export default function About() {
           </ul>
         </div>
 
-  <div className="w-full h-[200px] bg-[#18181f]  py-4 md:mt-25 text-center flex items-center justify-center">
-        <Marquee direction="right" speed={100}>
+        <div className="w-full h-[200px] bg-[#18181f] py-4 md:mt-25 text-center flex items-center justify-center">
+          <Marquee direction="right" speed={100}>
+            <h1 className="text-white md:text-6xl text-2xl font-bold text-center uppercase tracking-widest">
+              Discover Luxury Fragrances • Exclusive Scents • Premium Perfumes For You
+            </h1>
+          </Marquee>
+        </div>
 
-          <h1 className="text-white md:text-6xl text-2xl font-bold text-center uppercase tracking-widest">
-           Discover Luxury Fragrances • Exclusive Scents • Premium Perfumes For You
-          </h1>
-        </Marquee>
-      </div>
-
-        <div className="bg-gray-200 py-20 p9.1.jpg">
+        <div className="bg-gray-200 py-20">
           <div className="max-w-5xl mx-auto grid md:grid-cols-3 gap-10">
             <div className="text-center">
               <img src="/9.1.jpg" className="w-full h-60 object-cover rounded-xl mb-4" />
@@ -63,48 +99,39 @@ export default function About() {
           </div>
         </div>
 
-
-
-
         <div className="max-w-5xl mx-auto py-24 px-6">
           <div className="grid md:grid-cols-2 gap-10 items-center">
             <img src="/5.1.jpg" className="rounded-2xl w-full h-[350px] object-cover" />
             <div>
-              <h2 className="text-2xl font-semibold mb-4 tracking-wide">
-                A Journey Through Scent
-              </h2>
+              <h2 className="text-2xl font-semibold mb-4 tracking-wide">A Journey Through Scent</h2>
               <p className="text-gray-700 leading-7 mb-6">
                 Every fragrance tells a story—crafted with passion and inspired by the heart of Egyptian roots. 
                 Our perfumes blend modern luxury with cultural authenticity.
               </p>
-             
             </div>
           </div>
         </div>
 
-        <div className="bg-black text-white py-20 px-6 text-center mb-12">
-          <h2 className="text-2xl font-semibold mb-4 tracking-wide">
-            Why Choose Us?
-          </h2>
+        <div ref={sectionRef} className="bg-black text-white py-20 px-6 text-center mb-12">
+          <h2 className="text-2xl font-semibold mb-4 tracking-wide">Why Choose Us?</h2>
           <p className="max-w-2xl mx-auto text-gray-300 mb-8 leading-7">
             We focus on quality, authenticity, and delivering an unforgettable experience with every product.
           </p>
           <div className="flex justify-center gap-10 flex-wrap">
             <div>
-              <h3 className="text-xl font-bold">10+</h3>
+              <h3 className="text-4xl mb-2 font-bold ">{numbers[0]}+</h3>
               <p className="text-gray-400 text-sm">Years of Experience</p>
             </div>
             <div>
-              <h3 className="text-xl font-bold">50K+</h3>
+              <h3 className="text-4xl mb-2 font-bold">{numbers[1].toLocaleString()}+</h3>
               <p className="text-gray-400 text-sm">Happy Customers</p>
             </div>
             <div>
-              <h3 className="text-xl font-bold">100%</h3>
+              <h3 className="text-4xl mb-2 font-bold">{numbers[2]}%</h3>
               <p className="text-gray-400 text-sm">Premium Quality</p>
             </div>
           </div>
         </div>
-
       </div>
     </>
   );

@@ -64,10 +64,10 @@ export default function Contact() {
 
         {/* شريط متحرك */}
         <Marquee gradient={false} speed={50} className="mb-38 mt-20 bg-white p-4 rounded-lg">
-          <img src="/1.1.avif" alt="logo1" className="w-[300px] h-[300px] mx-4 object-cover" />
-          <img src="/1.2.avif" alt="logo2" className="w-[300px] h-[300px] mx-4 object-cover" />
-          <img src="/1.3.avif" alt="logo3" className="w-[300px] h-[300px] mx-4 object-cover" />
-          <img src="/1.4.avif" alt="logo4" className="w-[300px] h-[300px] mx-4 object-cover" />
+          <img src="/1.1.avif" alt="logo1" className="md:w-[300px] md:h-[300px] w-[200px] mx-4 object-cover" />
+          <img src="/1.2.avif" alt="logo2" className="md:w-[300px] md:h-[300px] w-[200px] mx-4 object-cover" />
+          <img src="/1.3.avif" alt="logo3" className="md:w-[300px] md:h-[300px] w-[200px] mx-4 object-cover" />
+          <img src="/1.4.avif" alt="logo4" className="md:w-[300px] md:h-[300px] w-[200px] mx-4 object-cover" />
         </Marquee>
 
         {/* أيقونات وسائل التواصل الاجتماعي */}
@@ -92,7 +92,7 @@ export default function Contact() {
  
         {/* الفورم */}
 
-<form onSubmit={handleSubmit} className="flex flex-col gap-6 max-w-xl mx-auto bg-white/20 backdrop-blur-md p-8 rounded-3-lg mt-28">
+<form onSubmit={handleSubmit} className="flex flex-col md:gap-6 gap-4 max-w-xl mx-auto bg-white/20 backdrop-blur-md p-8 rounded-3-lg mt-28">
   <input
     type="text"
     name="name"
@@ -115,7 +115,7 @@ export default function Contact() {
   ></textarea>
   <button
     type="submit"
-    className="bg-black/80 text-white py-4 rounded-2xl hover:bg-black/90 transition-colors text-lg font-semibold shadow-md"
+    className="bg-black/80  text-white py-4 rounded-2xl hover:bg-black/90 transition-colors text-lg font-semibold shadow-md"
   >
     Send Message
   </button>
