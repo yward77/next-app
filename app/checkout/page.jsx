@@ -77,7 +77,7 @@ export default function CheckoutPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-100 flex items-center justify-center p-4">
+    <div className="min-h-screen md:bg-gray-100 flex items-center justify-center p-4">
       <form
         onSubmit={handleSubmit}
         className="bg-white rounded-3xl shadow-2xl w-full max-w-4xl p-8 flex flex-col md:flex-row gap-8"
@@ -175,7 +175,7 @@ export default function CheckoutPage() {
           <button
             type="submit"
             disabled={loading}
-            className="w-full mt-4 bg-blue-600 text-white py-4 rounded-xl font-semibold hover:bg-blue-700 transition"
+            className="w-full mt-4 bg-gray-800 text-white py-4 rounded-xl font-semibold hover:bg-blue-700 transition"
           >
             {loading ? "Sending..." : "Place Order"}
           </button>

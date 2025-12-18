@@ -150,7 +150,7 @@ export default function ShopPage() {
                       </button>
                       <button
                         onClick={() => setSelectedProduct(product)}
-                        className="flex-1 flex items-center justify-center py-2 bg-white text-black drop-shadow-md rounded-lg hover:bg-green-700 hover:text-white transition gap-1 text-sm md:text-base"
+                        className="flex-1 flex items-center justify-center py-1 bg-white text-black drop-shadow-md rounded-lg hover:bg-green-700 hover:text-white transition gap-1 text-sm md:text-base"
                       >
                         Product Details
                       </button>
@@ -190,85 +190,92 @@ export default function ShopPage() {
               </button>
             </div>
           </div>
-        )}
+        )}{cartOpen && (
+  <div className="fixed top-0 right-0 h-screen w-full sm:w-[420px] bg-white z-50 flex flex-col border-l shadow-lg animate-slide-in">
 
-        {/* سلة الشراء */}
-        {cartOpen && (
-          <div className="fixed top-20 right-5 bg-white shadow-2xl rounded-2xl md:w-96 z-50 p-6 flex flex-col max-h-[80vh]">
-            <div className="flex justify-between items-center mb-4">
-              <h2 className="text-2xl font-bold">🛒 Your Cart</h2>
-              <button
-                onClick={() => setCartOpen(false)}
-                className="text-gray-500 hover:text-black text-xl font-bold"
-              >
-                ×
-              </button>
-            </div>
+    <div className="flex justify-between items-center px-4 sm:px-6 py-4 border-b">
+      <h2 className="text-xl sm:text-2xl tracking-widest font-bold">CART</h2>
+      <button
+        onClick={() => setCartOpen(false)}
+        className="text-2xl text-gray-600 hover:text-black"
+      >
+        ×
+      </button>
+    </div>
 
-            <div className="flex-1 overflow-auto">
-              {cart.length === 0 ? (
-                <p className="text-gray-500 text-center mt-10">Your cart is empty.</p>
-              ) : (
-                cart.map((item) => {
-                  const img =
-                    item.imag?.[0]?.formats?.thumbnail?.url ||
-                    item.imag?.[0]?.formats?.small?.url ||
-                    item.imag?.[0]?.url;
-                  const fullImg = img ? "http://localhost:1337" + img : "/default-image.png";
+    <div className="flex-1 overflow-auto px-4 sm:px-6">
+      {cart.length === 0 ? (
+        <p className="text-gray-500 text-center mt-10">Your cart is empty.</p>
+      ) : (
+        cart.map((item) => {
+          const img =
+            item.imag?.[0]?.formats?.thumbnail?.url ||
+            item.imag?.[0]?.formats?.small?.url ||
+            item.imag?.[0]?.url;
+          const fullImg = img ? "http://localhost:1337" + img : "/default-image.png";
 
-                  return (
-                    <div
-                      key={item.id}
-                      className="flex items-center justify-between mb-4 p-2 rounded-lg hover:bg-gray-100 transition"
-                    >
-                      <img src={fullImg} alt={item.name} className="w-16 h-16 object-cover rounded-lg" />
-                      <div className="flex-1 ml-3">
-                        <h3 className="font-semibold text-gray-800 truncate">{item.name}</h3>
-                        <p className="text-gray-600">${item.price} x {item.quantity}</p>
-                      </div>
-                      <div className="flex items-center gap-1">
-                        <button
-                          onClick={() => updateQuantity(item.id, item.quantity - 1)}
-                          className="px-2 py-1 bg-gray-200 rounded hover:bg-gray-300"
-                        >
-                          -
-                        </button>
-                        <span>{item.quantity}</span>
-                        <button
-                          onClick={() => updateQuantity(item.id, item.quantity + 1)}
-                          className="px-2 py-1 bg-gray-200 rounded hover:bg-gray-300"
-                        >
-                          +
-                        </button>
-                        <button
-                          onClick={() => removeFromCart(item.id)}
-                          className="text-red-500 hover:text-red-700 font-bold text-xl ml-2"
-                        >
-                          ×
-                        </button>
-                      </div>
-                      <p className="font-semibold text-gray-700 ml-2">
-                        ${(item.price * item.quantity).toFixed(2)}
-                      </p>
-                    </div>
-                  );
-                })
-              )}
-            </div>
+          return (
+            <div key={item.id} className="flex gap-3 sm:gap-4 py-4 sm:py-6 border-b">
+              <img
+                src={fullImg}
+                alt={item.name}
+                className="w-16 h-16 sm:w-20 sm:h-20 object-cover rounded"
+              />
 
-            {cart.length > 0 && (
-              <div className="mt-4">
-                <p className="text-lg font-bold mb-4">Total: ${total.toFixed(2)}</p>
+              <div className="flex-1 text-sm">
+                <p className="font-medium uppercase leading-snug truncate">
+                  {item.name}
+                </p>
+
+                <p className="text-gray-500 mt-1">
+                  LE {item.price}
+                </p>
+
+                <div className="flex items-center border w-fit mt-2 sm:mt-3">
+                  <button
+                    onClick={() => updateQuantity(item.id, item.quantity - 1)}
+                    className="px-2 py-1 sm:px-3 sm:py-1"
+                  >
+                    -
+                  </button>
+                  <span className="px-3 sm:px-4 py-1 border-x">
+                    {item.quantity}
+                  </span>
+                  <button
+                    onClick={() => updateQuantity(item.id, item.quantity + 1)}
+                    className="px-2 py-1 sm:px-3 sm:py-1"
+                  >
+                    +
+                  </button>
+                </div>
+
                 <button
-                  onClick={() => router.push("/checkout")}
-                  className="w-full bg-blue-600 text-white py-3 rounded-xl hover:bg-blue-700 transition font-semibold"
+                  onClick={() => removeFromCart(item.id)}
+                  className="text-xs underline mt-1 sm:mt-2 text-gray-500"
                 >
-                  Checkout
+                  Remove
                 </button>
               </div>
-            )}
-          </div>
-        )}
+            </div>
+          );
+        })
+      )}
+    </div>
+
+    {cart.length > 0 && (
+      <div className="p-4 sm:p-6 border-t">
+        <button
+          onClick={() => router.push("/checkout")}
+          className="w-full bg-black text-white py-3 sm:py-4 tracking-widest text-sm sm:text-base rounded"
+        >
+          CHECKOUT · LE {total.toFixed(2)}
+        </button>
+      </div>
+    )}
+  </div>
+)}
+
+
       </div>
     </div>
   );
