@@ -77,7 +77,7 @@ export default function SectionInfo() {
         </div>
       </div>
 
-      {/* Stats */}
+      {/* Stats */}  
       <div className="bg-gray-100 py-16 px-4">
         <div className="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-6 text-center">
           {statsData.map((stat, idx) => (
