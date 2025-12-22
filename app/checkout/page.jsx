@@ -114,7 +114,7 @@ export default function CheckoutPage() {
         {/* Right: Order Summary */}
         <div className="flex-1 flex flex-col gap-4">
           <h2 className="text-2xl font-semibold text-gray-700 mb-4">
-            Order Summary
+            Order 
           </h2>
 
           <div className="flex-1 overflow-y-auto max-h-[400px] space-y-3">
@@ -177,7 +177,7 @@ export default function CheckoutPage() {
             disabled={loading}
             className="w-full mt-4 bg-gray-800 text-white py-4 rounded-xl font-semibold hover:bg-blue-700 transition"
           >
-            {loading ? "Sending..." : "Place Order"}
+            {loading ? "Sending..." : "SUBMIT ORDER"}
           </button>
         </div>
       </form>
