@@ -25,6 +25,7 @@
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
     "babel-plugin-react-compiler": "1.0.0",
+    "prettier": "3.7.4",
     "tailwindcss": "^4"
   }
 }
