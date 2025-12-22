@@ -1,13 +1,12 @@
 import Footer from "../Footer/Footer";
 import Navbar from "../Navbar/Navbar";
-import Sectionbranches from "../sectionbranches/sectionbranches";
-
+import SectionFrequentlyAskedQuestions from "../sectionFrequentlyAskedQuestions/sectionFrequentlyAskedQuestions.js";
 
 export default function Home() {
   return (
     <>
       <Navbar />
-      <Sectionbranches />
+      <SectionFrequentlyAskedQuestions />
       <Footer />
     </>
   );

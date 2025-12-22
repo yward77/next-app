@@ -14,7 +14,7 @@ export default function Home() {
   const items = [
     { name: "HOME", link: "/" },
     { name: "SHOP ALL", link: "/shop" },
-    { name: "Frequently Asked Questions", link: "/branches" },
+    { name: "Frequently Asked Questions", link: "/FrequentlyAskedQuestions" },
     { name: "CONTACT US", link: "/contact" },
     { name: "ABOUT", link: "/about" },
   ];
