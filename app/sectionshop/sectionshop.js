@@ -139,7 +139,7 @@ export default function ShopPage() {
               return (
                 <div
                   key={product.id}
-                  className="bg-tra transition transform hover:-translate-y-1 overflow-hidden flex flex-col
+                  className="bg-transparent transition shadow-lg transform hover:-translate-y-1 overflow-hidden flex flex-col
                              p-2 sm:p-3 md:p-4 min-h-[250px] sm:min-h-[300px] md:min-h-[400px]"
                 >
                   <div className="w-full h-24 sm:h-32 md:h-48 bg-gray-200 overflow-hidden">
