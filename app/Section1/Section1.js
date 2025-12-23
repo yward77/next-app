@@ -151,7 +151,7 @@ export default function Section() {
         </div>
 
       {/* Bundles */}
-      <div className="relative w-full h-[550px] mb-10 ">
+      <div className="relative w-full h-[550px] md:mb-10 ">
         <img
           src="/Bundles_1 (1).webp"
           alt="Bottom Image"

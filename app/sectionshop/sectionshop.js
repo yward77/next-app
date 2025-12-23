@@ -83,7 +83,7 @@ export default function ShopPage() {
     <div className="min-h-screen bg-white py-10 px-3 md:px-5 mt-30">
       <div className="max-w-7xl mx-auto">
         <div className="flex flex-col md:flex-row items-center justify-between mb-6 gap-4">
-          <h1 className="text-3xl md:text-4xl font-bold text-center md:text-left">
+          <h1 className="text-3xl md:text-4xl font-bold text-center md:text-left = mb-5">
             🛍️ Siwa Shop
           </h1>
           <div className="relative">
@@ -92,7 +92,7 @@ export default function ShopPage() {
               onClick={() => setCartOpen(!cartOpen)}
             />
             {cart.length > 0 && (
-              <span className="absolute -top-2 -right-2 bg-red-600 text-white text-xs px-2 py-1 rounded-full">
+              <span className="absolute -top-5 -right-2 bg-red-600 text-white text-xs px-2 py-1 rounded-full">
                 {cart.length}
               </span>
             )}
@@ -139,8 +139,8 @@ export default function ShopPage() {
               return (
                 <div
                   key={product.id}
-                  className="bg-transparent transition shadow-lg transform hover:-translate-y-1 overflow-hidden flex flex-col
-                             p-2 sm:p-3 md:p-4 min-h-[250px] sm:min-h-[300px] md:min-h-[400px]"
+                  className="bg-transparent transition shadow transform hover:-translate-y-1 overflow-hidden flex flex-col
+                             p-2 sm:p-3 md:p-4 min-h-[250px] sm:min-h-[300px] md:min-h-[420px]"
                 >
                   <div className="w-full h-24 sm:h-32 md:h-48 bg-gray-200 overflow-hidden">
                     <img
