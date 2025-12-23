@@ -142,17 +142,16 @@ export default function Section() {
 
       <br /><br /><br />
 
-      {/* الشريط المنفصل فوق Bundles */}
-      <div className="w-full h-[200px] bg-[#18181f] py-4 mb-13 text-center flex items-center justify-center">
-        <Marquee speed={100}>
-          <h1 className="text-white md:text-6xl text-2xl font-bold text-center uppercase tracking-widest">
-            Discover Luxury Fragrances • Exclusive Scents • Premium Perfumes For You
-          </h1>
-        </Marquee>
-      </div>
+        <div className="w-full h-[200px] bg-[#18181f] py-4 md:mt-25 text-center flex items-center mb-3.5 justify-center">
+          <Marquee direction="right" speed={100}>
+            <h1 className="text-white md:text-6xl text-2xl font-bold text-center uppercase tracking-widest">
+              Discover Luxury Fragrances • Exclusive Scents • Premium Perfumes For You
+            </h1>
+          </Marquee>
+        </div>
 
       {/* Bundles */}
-      <div className="relative w-full h-[550px] mb-10">
+      <div className="relative w-full h-[550px] mb-10 ">
         <img
           src="/Bundles_1 (1).webp"
           alt="Bottom Image"
@@ -173,14 +172,14 @@ export default function Section() {
         </div>
       </div>
 
-      {/* شريط أسفل Bundles */}
-      <div className="w-full h-[200px] bg-[#18181f] py-4 md:mt-25 text-center flex items-center justify-center">
-        <Marquee direction="right" speed={100}>
-          <h1 className="text-white md:text-6xl text-2xl font-bold text-center uppercase tracking-widest">
-            Discover Luxury Fragrances • Exclusive Scents • Premium Perfumes For You
-          </h1>
-        </Marquee>
-      </div>
+      {/* شريط أسفل Bundles */}\
+        <div className="w-full h-[200px] bg-[#18181f] py-4 md:mt-2.5 text-center flex items-center justify-center">
+          <Marquee direction="right" speed={100}>
+            <h1 className="text-white md:text-6xl text-2xl font-bold text-center uppercase tracking-widest">
+              Discover Luxury Fragrances • Exclusive Scents • Premium Perfumes For You
+            </h1>
+          </Marquee>
+        </div>
 
       <br /><br />
 
@@ -199,8 +198,8 @@ export default function Section() {
 
       {/* مجموعتنا */}
       <div>
-        <h1 className="md:text-4xl text-2xl text-center font-light md:mt-30 mb-5">
-          our collections
+        <h1 className="md:text-4xl text-2xl text-center font-bold md:mt-30 mb-5">
+          OUR COLLECTIONS
         </h1>
         <br /><br /><br />
 
@@ -224,28 +223,6 @@ export default function Section() {
         <br /><br />
       </div>
 
-      <br /><br /><br />
-
-      {/* صور Footer */}
-      <div className="flex flex-wrap justify-center gap-5 mb-10 border-t-black pt-10">
-        <img
-          src="/2.1.png"
-          alt="Footer Image"
-          className="w-40 md:w-100 shadow-2xl mb-4 border-2 border-gray-300"
-        />
-        <img
-          src="/2.2.png"
-          alt="Footer Image"
-          className="w-40 md:w-100 shadow-2xl mb-4 border-2 border-gray-300"
-        />
-        <img
-          src="/2.3 (2).png"
-          alt="Footer Image"
-          className="w-40 md:w-100 shadow-2xl mb-4 border-2 border-gray-300"
-        />
-      </div>
-
-      <br /><br /><br /><br />
     </>
   );
 }
