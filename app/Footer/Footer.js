@@ -49,7 +49,7 @@ export default function Footer() {
           <ul className="space-y-3 text-sm leading-6">
             <li className="hover:underline cursor-pointer"><Link href="/">HOME</Link></li>
             <li className="hover:underline cursor-pointer"><Link href="/shop">SHOP ALL</Link></li>
-            <li className="hover:underline cursor-pointer"><Link href="/branches">BRANCHES</Link></li>
+            <li className="hover:underline cursor-pointer"><Link href="/FrequentlyAskedQuestions">frequently Asked Questions</Link></li>
             <li className="hover:underline cursor-pointer"><Link href="/about">ABOUT</Link></li>
             <li className="hover:underline cursor-pointer"><Link href="/contact">CONTACT US</Link></li>
           </ul>
