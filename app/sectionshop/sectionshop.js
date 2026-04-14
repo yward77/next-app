@@ -49,12 +49,6 @@ export default function ShopPage() {
     localStorage.setItem("siwa_cart", JSON.stringify(newCart));
   };
 
-  const removeFromCart = (productId) => {
-    const newCart = cart.filter((item) => item.id !== productId);
-    setCart(newCart);
-    localStorage.setItem("siwa_cart", JSON.stringify(newCart));
-  };
-
   const updateQuantity = (productId, newQty) => {
     const updatedCart = cart
       .map((item) => (item.id === productId ? { ...item, quantity: newQty } : item))
@@ -69,13 +63,32 @@ export default function ShopPage() {
       (p.attributes?.name || p.name || "").toLowerCase().includes(value.toLowerCase())
     );
     setFiltered(result);
+    setSortType(""); // إعادة الترتيب عند البحث
   };
 
+  // --- إصلاح دالة الترتيب (Sort) لتعمل بدقة مع الأرقام ---
   const handleSort = (type) => {
     setSortType(type);
     let sorted = [...filtered];
-    if (type === "price-low") sorted.sort((a, b) => (a.attributes?.price || 0) - (b.attributes?.price || 0));
-    if (type === "price-high") sorted.sort((a, b) => (b.attributes?.price || 0) - (a.attributes?.price || 0));
+
+    if (type === "price-low") {
+      sorted.sort((a, b) => {
+        const priceA = Number(a.attributes?.price || a.price || 0);
+        const priceB = Number(b.attributes?.price || b.price || 0);
+        return priceA - priceB;
+      });
+    } else if (type === "price-high") {
+      sorted.sort((a, b) => {
+        const priceA = Number(a.attributes?.price || a.price || 0);
+        const priceB = Number(b.attributes?.price || b.price || 0);
+        return priceB - priceA;
+      });
+    } else {
+      // إعادة الحالة الأصلية
+      sorted = products.filter((p) =>
+        (p.attributes?.name || p.name || "").toLowerCase().includes(search.toLowerCase())
+      );
+    }
     setFiltered(sorted);
   };
 
@@ -85,7 +98,7 @@ export default function ShopPage() {
     <div className="min-h-screen bg-white py-10 px-3 md:px-5 mt-30">
       <div className="max-w-7xl mx-auto">
         
-        {/* Header - التصميم الأصلي */}
+        {/* Header */}
         <div className="flex flex-col md:flex-row items-center justify-between mb-6 gap-4">
           <h1 className="text-3xl md:text-4xl font-bold text-center md:text-left mb-5">
             🛍️ Siwa Shop
@@ -103,7 +116,7 @@ export default function ShopPage() {
           </div>
         </div>
 
-        {/* Search & Sort - التصميم الأصلي */}
+        {/* Search & Sort Section */}
         <div className="mb-6 flex flex-col md:flex-row items-center justify-between gap-4 md:w-full">
           <input
             type="text"
@@ -143,10 +156,10 @@ export default function ShopPage() {
                     <p className="text-gray-600 text-sm mb-2 line-clamp-2">{desc}</p>
                     <p className="text-xl font-bold text-gray-700 mb-3">${p.price}</p>
                     <div className="flex gap-2 mt-auto">
-                      <button onClick={() => addToCart(product)} className="flex-1 flex items-center justify-center py-2 bg-black text-white hover:bg-blue-700 transition gap-1 text-sm md:text-base">
+                      <button onClick={() => addToCart(product)} className="flex-1 flex items-center justify-center py-2 bg-black text-white hover:bg-gray-800 transition gap-1 text-sm md:text-base">
                         <ShoppingCart className="w-4 h-4 md:w-5 md:h-5" /> Add
                       </button>
-                      <button onClick={() => setSelectedProduct(product)} className="flex-1 flex items-center justify-center py-1 bg-white border border-black text-black hover:bg-green-700 hover:text-white transition gap-1 text-sm md:text-base">
+                      <button onClick={() => setSelectedProduct(product)} className="flex-1 flex items-center justify-center py-1 bg-white border border-black text-black hover:bg-gray-100 transition gap-1 text-sm md:text-base">
                         Details
                       </button>
                     </div>
@@ -157,7 +170,7 @@ export default function ShopPage() {
           </div>
         )}
 
-        {/* Modal - التصميم الأصلي */}
+        {/* Modal */}
         {selectedProduct && (
           <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-50 p-4">
             <div className="bg-white rounded-3xl shadow-2xl max-w-md w-full md:max-w-3xl overflow-hidden relative">
@@ -178,7 +191,7 @@ export default function ShopPage() {
                     <p className="text-gray-600 mb-4">{selectedProduct.attributes?.description?.[0]?.children?.[0]?.text || selectedProduct.description?.[0]?.children?.[0]?.text}</p>
                     <p className="text-2xl font-bold text-gray-800 mb-6">${selectedProduct.attributes?.price || selectedProduct.price}</p>
                   </div>
-                  <button onClick={() => addToCart(selectedProduct)} className="w-full py-3 bg-black text-white rounded-xl hover:bg-blue-600 transition flex items-center justify-center gap-2">
+                  <button onClick={() => addToCart(selectedProduct)} className="w-full py-3 bg-black text-white rounded-xl hover:bg-gray-800 transition flex items-center justify-center gap-2">
                     <ShoppingCart className="w-5 h-5" /> Add to Cart
                   </button>
                 </div>
@@ -187,7 +200,7 @@ export default function ShopPage() {
           </div>
         )}
 
-        {/* Cart - التصميم الأصلي */}
+        {/* Cart Drawer */}
         {cartOpen && (
           <div className="fixed top-0 right-0 h-screen w-full sm:w-[420px] bg-white z-50 flex flex-col border-l shadow-lg">
             <div className="flex justify-between items-center px-4 sm:px-6 py-4 border-b">
@@ -204,7 +217,7 @@ export default function ShopPage() {
                     <img src={fullImg} className="w-16 h-16 sm:w-20 sm:h-20 object-cover rounded" />
                     <div className="flex-1 text-sm">
                       <p className="font-medium uppercase truncate">{p.name}</p>
-                      <p className="text-gray-500 mt-1">LE {p.price}</p>
+                      <p className="text-gray-500 mt-1">${p.price}</p>
                       <div className="flex items-center border w-fit mt-2">
                         <button onClick={() => updateQuantity(item.id, item.quantity - 1)} className="px-2 py-1">-</button>
                         <span className="px-3 py-1 border-x">{item.quantity}</span>
@@ -218,7 +231,7 @@ export default function ShopPage() {
             {cart.length > 0 && (
               <div className="p-4 sm:p-6 border-t">
                 <button onClick={() => router.push("/checkout")} className="w-full bg-black text-white py-3 sm:py-4 tracking-widest rounded">
-                  CHECKOUT · LE {total.toFixed(2)}
+                  CHECKOUT · ${total.toFixed(2)}
                 </button>
               </div>
             )}

@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 
-// الرابط الجديد الخاص بك على ريندر
+// الرابط الخاص بك على ريندر
 const API = "https://siwa-api.onrender.com";
 
 export default function CheckoutPage() {
@@ -20,7 +20,6 @@ export default function CheckoutPage() {
     setCart(savedCart);
   }, []);
 
-  // تعديل حساب المجموع ليتناسب مع هيكلة attributes
   const total = cart.reduce((acc, cur) => {
     const price = cur.attributes?.price || cur.price || 0;
     return acc + Number(price) * cur.quantity;
@@ -40,7 +39,6 @@ export default function CheckoutPage() {
       phone,
       address,
       total,
-      // تجهيز العناصر لتتوافق مع ما يتوقعه السيرفر
       items: cart.map((item) => {
         const p = item.attributes || item;
         return {
@@ -55,7 +53,6 @@ export default function CheckoutPage() {
     };
 
     try {
-      // 1. إرسال الطلب إلى Strapi المرفوع على ريندر
       const response = await fetch(`${API}/api/orders`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -64,7 +61,6 @@ export default function CheckoutPage() {
 
       if (!response.ok) throw new Error("Failed to save order in Strapi");
 
-      // 2. إرسال إشعار WhatsApp (تأكد أن هذا المسار يعمل في Next.js لديك)
       await fetch("/api/send-whatsapp", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -92,47 +88,47 @@ export default function CheckoutPage() {
   };
 
   return (
-    <div className="min-h-screen md:bg-gray-100 flex items-center justify-center p-4">
+    <div className="min-h-screen bg-gray-50 md:bg-gray-100 flex items-center justify-center p-4">
       <form
         onSubmit={handleSubmit}
-        className="bg-white rounded-3xl shadow-2xl w-full max-w-4xl p-8 flex flex-col md:flex-row gap-8"
+        className="bg-white rounded-3xl shadow-2xl w-full max-w-5xl p-6 md:p-10 flex flex-col md:flex-row gap-10"
       >
         {/* Left: Customer Info */}
-        <div className="flex-1 flex flex-col gap-4">
-          <h1 className="text-3xl font-bold text-gray-800 mb-4">Checkout</h1>
-
-          <input
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            required
-            placeholder="Full Name"
-            className="w-full p-4 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-400"
-          />
-
-          <input
-            value={phone}
-            onChange={(e) => setPhone(e.target.value)}
-            required
-            placeholder="Phone Number"
-            className="w-full p-4 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-400"
-          />
-
-          <textarea
-            value={address}
-            onChange={(e) => setAddress(e.target.value)}
-            required
-            placeholder="Address"
-            className="w-full p-4 border border-gray-300 rounded-xl h-32 resize-none focus:outline-none focus:ring-2 focus:ring-blue-400"
-          />
+        <div className="flex-1 flex flex-col gap-5">
+          <h1 className="text-3xl font-bold text-gray-800">Checkout</h1>
+          <div className="space-y-4">
+            <input
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              required
+              placeholder="Full Name"
+              className="w-full p-4 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-black transition"
+            />
+            <input
+              value={phone}
+              onChange={(e) => setPhone(e.target.value)}
+              required
+              placeholder="Phone Number"
+              className="w-full p-4 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-black transition"
+            />
+            <textarea
+              value={address}
+              onChange={(e) => setAddress(e.target.value)}
+              required
+              placeholder="Full Address"
+              className="w-full p-4 border border-gray-200 rounded-xl h-32 resize-none focus:outline-none focus:ring-2 focus:ring-black transition"
+            />
+          </div>
         </div>
 
         {/* Right: Order Summary */}
-        <div className="flex-1 flex flex-col gap-4">
-          <h2 className="text-2xl font-semibold text-gray-700 mb-4">Order</h2>
+        <div className="flex-1 flex flex-col bg-gray-50 p-6 rounded-2xl border border-gray-100">
+          <h2 className="text-2xl font-semibold text-gray-700 mb-6">Order Summary</h2>
 
-          <div className="flex-1 overflow-y-auto max-h-[400px] space-y-3">
+          {/* قائمة المنتجات المحسنة */}
+          <div className="flex-1 overflow-y-auto max-h-[350px] pr-2 space-y-4 custom-scrollbar">
             {cart.length === 0 ? (
-              <p className="text-gray-500 text-center">No products in cart</p>
+              <p className="text-gray-500 text-center py-10">No products in cart</p>
             ) : (
               cart.map((item) => {
                 const p = item.attributes || item;
@@ -142,55 +138,67 @@ export default function CheckoutPage() {
                 return (
                   <div
                     key={item.id}
-                    className="flex items-center gap-4 p-3 border rounded-xl bg-gray-50 hover:shadow-lg transition"
+                    className="flex items-center gap-4 p-3 bg-white border border-gray-100 rounded-xl shadow-sm overflow-hidden"
                   >
+                    {/* الصورة */}
                     <img
                       src={fullImg}
                       alt={p.name}
-                      className="w-16 h-16 object-cover rounded-lg"
+                      className="w-16 h-16 object-cover rounded-lg flex-shrink-0 bg-gray-200"
                     />
-                    <div className="flex-1 text-sm md:text-base">
-                      <p className="font-medium text-gray-800 truncate w-32 md:w-40">{p.name}</p>
-                      <p className="text-sm text-gray-500">${p.price}</p>
+
+                    {/* الاسم والسعر */}
+                    <div className="flex-1 min-w-0">
+                      <p className="font-bold text-gray-800 truncate text-sm">
+                        {p.name}
+                      </p>
+                      <p className="text-xs text-gray-500">${p.price}</p>
                     </div>
-                    <div className="flex items-center gap-2">
-                      <button
-                        type="button"
-                        onClick={() => updateQuantity(item.id, item.quantity - 1)}
-                        className="px-2 py-1 bg-gray-200 rounded hover:bg-gray-300"
-                      >
-                        -
-                      </button>
-                      <span className="min-w-[20px] text-center">{item.quantity}</span>
-                      <button
-                        type="button"
-                        onClick={() => updateQuantity(item.id, item.quantity + 1)}
-                        className="px-2 py-1 bg-gray-200 rounded hover:bg-gray-300"
-                      >
-                        +
-                      </button>
+
+                    {/* التحكم في الكمية والسعر الفرعي */}
+                    <div className="flex flex-col items-end gap-2 flex-shrink-0">
+                      <div className="flex items-center gap-2 bg-gray-100 rounded-lg p-1">
+                        <button
+                          type="button"
+                          onClick={() => updateQuantity(item.id, item.quantity - 1)}
+                          className="w-6 h-6 flex items-center justify-center bg-white rounded shadow-sm text-gray-600 hover:bg-gray-50"
+                        >
+                          -
+                        </button>
+                        <span className="text-sm font-medium w-4 text-center">{item.quantity}</span>
+                        <button
+                          type="button"
+                          onClick={() => updateQuantity(item.id, item.quantity + 1)}
+                          className="w-6 h-6 flex items-center justify-center bg-white rounded shadow-sm text-gray-600 hover:bg-gray-50"
+                        >
+                          +
+                        </button>
+                      </div>
+                      <p className="text-sm font-bold text-gray-900">
+                        ${((p.price || 0) * item.quantity).toFixed(2)}
+                      </p>
                     </div>
-                    <p className="font-semibold text-gray-700">
-                      ${((p.price || 0) * item.quantity).toFixed(2)}
-                    </p>
                   </div>
                 );
               })
             )}
           </div>
 
-          <div className="mt-4 flex justify-between items-center text-lg font-bold border-t pt-4">
-            <span>Total:</span>
-            <span>${total.toFixed(2)}</span>
-          </div>
+          {/* الإجمالي والزر */}
+          <div className="mt-6 border-t border-gray-200 pt-4">
+            <div className="flex justify-between items-center text-xl font-bold text-gray-800">
+              <span>Total:</span>
+              <span>${total.toFixed(2)}</span>
+            </div>
 
-          <button
-            type="submit"
-            disabled={loading}
-            className="w-full mt-4 bg-gray-800 text-white py-4 rounded-xl font-semibold hover:bg-black transition disabled:bg-gray-400"
-          >
-            {loading ? "Sending..." : "SUBMIT ORDER"}
-          </button>
+            <button
+              type="submit"
+              disabled={loading}
+              className="w-full mt-6 bg-gray-900 text-white py-4 rounded-xl font-bold hover:bg-black transition-all active:scale-[0.98] disabled:bg-gray-400"
+            >
+              {loading ? "Processing..." : "SUBMIT ORDER"}
+            </button>
+          </div>
         </div>
       </form>
     </div>
