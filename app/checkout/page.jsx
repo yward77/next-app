@@ -3,6 +3,9 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 
+// الرابط الجديد الخاص بك على ريندر
+const API = "https://siwa-api.onrender.com";
+
 export default function CheckoutPage() {
   const router = useRouter();
 
@@ -17,7 +20,11 @@ export default function CheckoutPage() {
     setCart(savedCart);
   }, []);
 
-  const total = cart.reduce((acc, cur) => acc + Number(cur.price) * cur.quantity, 0);
+  // تعديل حساب المجموع ليتناسب مع هيكلة attributes
+  const total = cart.reduce((acc, cur) => {
+    const price = cur.attributes?.price || cur.price || 0;
+    return acc + Number(price) * cur.quantity;
+  }, 0);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -33,23 +40,31 @@ export default function CheckoutPage() {
       phone,
       address,
       total,
-      items: cart.map((item) => ({
-        name: item.name,
-        price: Number(item.price),
-        quantity: item.quantity,
-        image: item.imag?.[0]?.url
-          ? "http://localhost:1337" + item.imag[0].url
-          : null,
-      })),
+      // تجهيز العناصر لتتوافق مع ما يتوقعه السيرفر
+      items: cart.map((item) => {
+        const p = item.attributes || item;
+        return {
+          name: p.name,
+          price: Number(p.price),
+          quantity: item.quantity,
+          image: p.imag?.data?.[0]?.attributes?.url || p.imag?.[0]?.url 
+            ? API + (p.imag?.data?.[0]?.attributes?.url || p.imag?.[0]?.url)
+            : null,
+        };
+      }),
     };
 
     try {
-      await fetch("http://localhost:1337/api/orders", {
+      // 1. إرسال الطلب إلى Strapi المرفوع على ريندر
+      const response = await fetch(`${API}/api/orders`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ data: orderData }),
       });
 
+      if (!response.ok) throw new Error("Failed to save order in Strapi");
+
+      // 2. إرسال إشعار WhatsApp (تأكد أن هذا المسار يعمل في Next.js لديك)
       await fetch("/api/send-whatsapp", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -113,61 +128,58 @@ export default function CheckoutPage() {
 
         {/* Right: Order Summary */}
         <div className="flex-1 flex flex-col gap-4">
-          <h2 className="text-2xl font-semibold text-gray-700 mb-4">
-            Order 
-          </h2>
+          <h2 className="text-2xl font-semibold text-gray-700 mb-4">Order</h2>
 
           <div className="flex-1 overflow-y-auto max-h-[400px] space-y-3">
             {cart.length === 0 ? (
               <p className="text-gray-500 text-center">No products in cart</p>
             ) : (
-              cart.map((item) => (
-                <div
-                  key={item.id}
-                  className="flex items-center gap-4 p-3 border rounded-xl bg-gray-50 hover:shadow-lg transition"
-                >
-                  <img
-                    src={
-                      item.imag?.[0]?.url
-                        ? "http://localhost:1337" + item.imag[0].url
-                        : "/default-image.png"
-                    }
-                    className="w-16 h-16 object-cover rounded-lg"
-                  />
-                  <div className="flex-1">
-                    <p className="font-medium text-gray-800">{item.name}</p>
-                    <p className="text-sm text-gray-500">${item.price}</p>
+              cart.map((item) => {
+                const p = item.attributes || item;
+                const imgUrl = p.imag?.data?.[0]?.attributes?.url || p.imag?.[0]?.url;
+                const fullImg = imgUrl ? API + imgUrl : "/default-image.png";
+
+                return (
+                  <div
+                    key={item.id}
+                    className="flex items-center gap-4 p-3 border rounded-xl bg-gray-50 hover:shadow-lg transition"
+                  >
+                    <img
+                      src={fullImg}
+                      alt={p.name}
+                      className="w-16 h-16 object-cover rounded-lg"
+                    />
+                    <div className="flex-1 text-sm md:text-base">
+                      <p className="font-medium text-gray-800 truncate w-32 md:w-40">{p.name}</p>
+                      <p className="text-sm text-gray-500">${p.price}</p>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <button
+                        type="button"
+                        onClick={() => updateQuantity(item.id, item.quantity - 1)}
+                        className="px-2 py-1 bg-gray-200 rounded hover:bg-gray-300"
+                      >
+                        -
+                      </button>
+                      <span className="min-w-[20px] text-center">{item.quantity}</span>
+                      <button
+                        type="button"
+                        onClick={() => updateQuantity(item.id, item.quantity + 1)}
+                        className="px-2 py-1 bg-gray-200 rounded hover:bg-gray-300"
+                      >
+                        +
+                      </button>
+                    </div>
+                    <p className="font-semibold text-gray-700">
+                      ${((p.price || 0) * item.quantity).toFixed(2)}
+                    </p>
                   </div>
-                  <div className="flex items-center gap-2">
-                    <button
-                      type="button"
-                      onClick={() =>
-                        updateQuantity(item.id, item.quantity - 1)
-                      }
-                      className="px-2 py-1 bg-gray-200 rounded hover:bg-gray-300"
-                    >
-                      -
-                    </button>
-                    <span>{item.quantity}</span>
-                    <button
-                      type="button"
-                      onClick={() =>
-                        updateQuantity(item.id, item.quantity + 1)
-                      }
-                      className="px-2 py-1 bg-gray-200 rounded hover:bg-gray-300"
-                    >
-                      +
-                    </button>
-                  </div>
-                  <p className="font-semibold text-gray-700">
-                    ${(item.price * item.quantity).toFixed(2)}
-                  </p>
-                </div>
-              ))
+                );
+              })
             )}
           </div>
 
-          <div className="mt-4 flex justify-between items-center text-lg font-bold">
+          <div className="mt-4 flex justify-between items-center text-lg font-bold border-t pt-4">
             <span>Total:</span>
             <span>${total.toFixed(2)}</span>
           </div>
@@ -175,7 +187,7 @@ export default function CheckoutPage() {
           <button
             type="submit"
             disabled={loading}
-            className="w-full mt-4 bg-gray-800 text-white py-4 rounded-xl font-semibold hover:bg-blue-700 transition"
+            className="w-full mt-4 bg-gray-800 text-white py-4 rounded-xl font-semibold hover:bg-black transition disabled:bg-gray-400"
           >
             {loading ? "Sending..." : "SUBMIT ORDER"}
           </button>
