@@ -18,6 +18,7 @@ export default function ShopPage() {
   const router = useRouter();
 
   useEffect(() => {
+    // تم إضافة populate=* لضمان جلب بيانات الصور من Strapi
     fetch(`${API}/api/products?populate=*`)
       .then((res) => res.json())
       .then((data) => {
@@ -63,10 +64,9 @@ export default function ShopPage() {
       (p.attributes?.name || p.name || "").toLowerCase().includes(value.toLowerCase())
     );
     setFiltered(result);
-    setSortType(""); // إعادة الترتيب عند البحث
+    setSortType("");
   };
 
-  // --- إصلاح دالة الترتيب (Sort) لتعمل بدقة مع الأرقام ---
   const handleSort = (type) => {
     setSortType(type);
     let sorted = [...filtered];
@@ -84,12 +84,23 @@ export default function ShopPage() {
         return priceB - priceA;
       });
     } else {
-      // إعادة الحالة الأصلية
       sorted = products.filter((p) =>
         (p.attributes?.name || p.name || "").toLowerCase().includes(search.toLowerCase())
       );
     }
     setFiltered(sorted);
+  };
+
+  // --- دالة موحدة لجلب رابط الصورة الصحيح ---
+  const getFullImgUrl = (item) => {
+    if (!item) return "/default-image.png";
+    const p = item.attributes || item;
+    // الوصول لبيانات الصورة في حقل imag (كما في Strapi الخاص بك)
+    const imgData = p.imag?.data?.[0]?.attributes || p.imag?.[0];
+    const url = imgData?.url;
+    
+    if (!url) return "/default-image.png";
+    return url.startsWith("http") ? url : `${API}${url}`;
   };
 
   const total = cart.reduce((acc, cur) => acc + (cur.attributes?.price || cur.price || 0) * cur.quantity, 0);
@@ -142,8 +153,7 @@ export default function ShopPage() {
           <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
             {filtered.map((product) => {
               const p = product.attributes || product;
-              const imgUrl = p.imag?.data?.[0]?.attributes?.url || p.imag?.[0]?.url;
-              const fullImg = imgUrl ? (imgUrl.startsWith("http") ? imgUrl : API + imgUrl) : "/default-image.png";
+              const fullImg = getFullImgUrl(product);
               const desc = p.description?.[0]?.children?.[0]?.text || "";
 
               return (
@@ -172,16 +182,13 @@ export default function ShopPage() {
 
         {/* Modal */}
         {selectedProduct && (
-          <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-50 p-4">
-            <div className="bg-white rounded-3xl shadow-2xl max-w-md w-full md:max-w-3xl overflow-hidden relative">
+          <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-50 p-4" onClick={() => setSelectedProduct(null)}>
+            <div className="bg-white rounded-3xl shadow-2xl max-w-md w-full md:max-w-3xl overflow-hidden relative" onClick={(e) => e.stopPropagation()}>
               <button onClick={() => setSelectedProduct(null)} className="absolute top-4 right-4 text-gray-400 hover:text-gray-900 text-3xl font-bold z-10">×</button>
               <div className="flex flex-col md:flex-row">
                 <div className="md:w-1/2 w-full h-64 md:h-auto">
                   <img 
-                    src={(() => {
-                      const img = selectedProduct.attributes?.imag?.data?.[0]?.attributes?.url || selectedProduct.imag?.[0]?.url;
-                      return img ? (img.startsWith("http") ? img : API + img) : "/default-image.png";
-                    })()} 
+                    src={getFullImgUrl(selectedProduct)} 
                     className="w-full h-full object-cover" 
                   />
                 </div>
@@ -210,8 +217,7 @@ export default function ShopPage() {
             <div className="flex-1 overflow-auto px-4 sm:px-6">
               {cart.map((item) => {
                 const p = item.attributes || item;
-                const img = p.imag?.data?.[0]?.attributes?.url || p.imag?.[0]?.url;
-                const fullImg = img ? (img.startsWith("http") ? img : API + img) : "/default-image.png";
+                const fullImg = getFullImgUrl(item);
                 return (
                   <div key={item.id} className="flex gap-3 sm:gap-4 py-4 sm:py-6 border-b">
                     <img src={fullImg} className="w-16 h-16 sm:w-20 sm:h-20 object-cover rounded" />
