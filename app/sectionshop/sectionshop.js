@@ -43,7 +43,6 @@ export default function ShopPage() {
     }
     setCart(newCart);
     localStorage.setItem("siwa_cart", JSON.stringify(newCart));
-    setCartOpen(true);
   };
 
   const updateQuantity = (productId, newQty) => {
@@ -81,93 +80,97 @@ export default function ShopPage() {
   const total = cart.reduce((acc, cur) => acc + (cur.attributes?.price || cur.price || 0) * cur.quantity, 0);
 
   return (
-    <div className="min-h-screen mt-20 bg-[#FBFBFB] text-[#1D1D1F] font-sans selection:bg-black selection:text-white">
+    <div className="min-h-screen mt-20 bg-white text-[#1D1D1F] font-sans selection:bg-black selection:text-white">
       
-      {/* --- ENHANCED FLOATING CART BUTTON (Larger on Desktop) --- */}
+      {/* Floating Cart Button */}
       <div className="fixed bottom-6 right-6 md:bottom-10 md:right-10 z-[100] flex flex-col items-end gap-3">
         {cart.length > 0 && (
-          <div className="bg-black text-white text-[10px] md:text-[12px] font-black px-4 py-1.5 rounded-full animate-bounce shadow-2xl uppercase tracking-tighter">
-            {cart.length} items added
+          <div className="bg-black text-white text-[10px] md:text-[11px] font-bold px-3 py-1 rounded-full animate-bounce shadow-xl uppercase tracking-tighter">
+            {cart.length} IN BAG
           </div>
         )}
         <button 
           onClick={() => setCartOpen(true)}
-          className="relative w-16 h-16 md:w-24 md:h-24 bg-black text-white rounded-full shadow-[0_30px_60px_rgba(0,0,0,0.3)] hover:scale-110 active:scale-95 transition-all flex items-center justify-center group"
+          className="relative w-14 h-14 md:w-20 md:h-20 bg-black text-white rounded-full shadow-2xl hover:scale-110 active:scale-90 transition-all flex items-center justify-center group"
         >
-          {/* Bag Icon: Standard size on mobile, much larger on Desktop */}
-          <ShoppingBag className="w-6 h-6 md:w-10 md:h-10 group-hover:rotate-12 transition-transform stroke-[1.5px]" />
-          
-          {/* Counter Badge inside the button for Desktop for a cleaner look */}
+          <ShoppingBag className="w-5 h-5 md:w-8 md:h-8 group-hover:rotate-12 transition-transform" />
           {cart.length > 0 && (
-            <span className="absolute inset-0 rounded-full border-4 border-black animate-ping opacity-20"></span>
+            <span className="absolute inset-0 rounded-full border-2 border-black animate-ping opacity-20"></span>
           )}
         </button>
       </div>
 
-      <main className="max-w-7xl mx-auto px-4 md:px-8 pt-32 pb-20">
+      <main className="max-w-7xl mx-auto px-4 md:px-10 pt-20 pb-20">
         
-        {/* HEADER SECTION */}
-        <div className="mb-12">
-          <h1 className="text-4xl md:text-7xl font-black tracking-tighter uppercase leading-[0.9]">
-            Siwa <span className="text-gray-300">Studio.</span>
+        {/* Header Section */}
+        <div className="mb-16 text-center md:text-left">
+          <h1 className="text-5xl md:text-8xl font-black tracking-tighter uppercase leading-none italic mb-8">
+            Siwa <span className="text-gray-200 block md:inline">Studio.</span>
           </h1>
-          <div className="flex flex-col md:flex-row gap-4 mt-8 justify-between items-start md:items-center">
+          
+          <div className="flex flex-col md:flex-row gap-4 justify-between items-center bg-gray-50/50 p-4 rounded-[2rem] border border-gray-100">
             <div className="relative w-full max-w-md">
                <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
                <input 
                  type="text" 
-                 placeholder="Search products..." 
-                 className="w-full bg-white border border-gray-100 rounded-2xl px-12 py-3 text-sm shadow-sm outline-none focus:ring-2 focus:ring-black/5"
+                 placeholder="Search our collection..." 
+                 className="w-full bg-white border border-gray-100 rounded-xl pl-12 pr-4 py-3 text-sm outline-none focus:ring-2 focus:ring-black/5"
                  onChange={(e) => handleSearch(e.target.value)}
                />
             </div>
             <select 
               onChange={(e) => handleSort(e.target.value)}
-              className="bg-white border border-gray-100 px-4 py-3 rounded-2xl text-xs font-bold uppercase tracking-widest outline-none shadow-sm cursor-pointer"
+              className="bg-white border border-gray-100 px-6 py-3 rounded-xl text-[10px] font-black uppercase tracking-widest outline-none cursor-pointer"
             >
-              <option value="">Sort By</option>
-              <option value="price-low">Price: Low to High</option>
-              <option value="price-high">Price: High to Low</option>
+              <option value="">Sort: Default</option>
+              <option value="price-low">Price: Low - High</option>
+              <option value="price-high">Price: High - Low</option>
             </select>
           </div>
         </div>
 
-        {/* PRODUCTS GRID (2 COLUMNS ON MOBILE) */}
+        {/* --- FIXED PRODUCT GRID --- */}
         {loading ? (
-          <div className="py-40 text-center font-black text-gray-100 text-4xl italic animate-pulse tracking-tighter">LOADING...</div>
+          <div className="py-40 text-center font-black text-gray-100 text-5xl italic animate-pulse">LOADING...</div>
         ) : (
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-3 gap-y-8 md:gap-x-8 md:gap-y-16">
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-4 gap-y-10 md:gap-x-10 md:gap-y-20">
             {filtered.map((product) => {
               const p = product.attributes || product;
               return (
-                <div key={product.id} className="group relative">
-                  <div className="relative aspect-[3/4] overflow-hidden rounded-[1.5rem] md:rounded-[2.5rem] bg-[#EAEAEA] mb-4 shadow-sm group-hover:shadow-xl transition-all duration-700">
+                <div key={product.id} className="group flex flex-col">
+                  {/* Image Container */}
+                  <div className="relative aspect-[4/5] overflow-hidden rounded-[2rem] bg-[#f9f9f9] mb-6 shadow-sm hover:shadow-xl transition-all duration-700">
                     <img 
                       src={getFullImgUrl(product)} 
                       alt={p.name} 
                       className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-1000" 
                     />
-                    <div className="absolute inset-0 bg-black/5 opacity-0 group-hover:opacity-100 transition-opacity hidden md:flex items-end p-4">
+                    
+                    {/* Hover Quick Add */}
+                    <div className="absolute inset-0 bg-black/5 opacity-0 group-hover:opacity-100 transition-opacity hidden md:flex items-end p-5">
                         <button 
                           onClick={() => addToCart(product)}
-                          className="w-full bg-white text-black py-4 rounded-2xl font-black text-xs shadow-2xl hover:bg-black hover:text-white transition-all flex items-center justify-center gap-2"
+                          className="w-full bg-white text-black py-4 rounded-2xl font-black text-[10px] tracking-widest shadow-2xl hover:bg-black hover:text-white transition-all uppercase"
                         >
-                          QUICK ADD +
+                          Quick Add +
                         </button>
                     </div>
                   </div>
                   
-                  <div className="flex flex-col px-1">
-                    <div className="flex justify-between items-start">
-                      <h3 className="text-sm md:text-lg font-bold tracking-tight uppercase line-clamp-1 italic">{p.name}</h3>
-                      <button onClick={() => setSelectedProduct(product)} className="md:hidden p-1">
+                  {/* Info Section */}
+                  <div className="flex flex-col px-2">
+                    <div className="flex justify-between items-start mb-1">
+                      <h3 className="text-sm md:text-base font-bold tracking-tight uppercase line-clamp-1 italic text-gray-800">{p.name}</h3>
+                      <button onClick={() => setSelectedProduct(product)} className="p-1 hover:bg-gray-100 rounded-full transition-colors">
                         <Info className="w-4 h-4 text-gray-400" />
                       </button>
                     </div>
-                    <span className="text-lg md:text-2xl font-black mt-1">${p.price}</span>
+                    <span className="text-lg md:text-xl font-black text-black">${p.price}</span>
+                    
+                    {/* Mobile Only Button */}
                     <button 
                       onClick={() => addToCart(product)}
-                      className="mt-3 md:hidden w-full bg-black text-white py-2.5 rounded-xl font-bold text-[10px] uppercase tracking-widest"
+                      className="mt-4 md:hidden w-full bg-black text-white py-3 rounded-xl font-black text-[9px] uppercase tracking-[0.2em] shadow-md active:scale-95 transition-transform"
                     >
                       Add to bag
                     </button>
@@ -178,27 +181,27 @@ export default function ShopPage() {
           </div>
         )}
 
-        {/* --- MODAL --- */}
+        {/* Modal & Side Cart code remain the same... */}
         {selectedProduct && (
-          <div className="fixed inset-0 z-[200] flex items-center justify-center p-4 bg-white/80 backdrop-blur-xl">
-            <div className="bg-white max-w-4xl w-full flex flex-col md:flex-row max-h-[90vh] overflow-hidden rounded-[2rem] md:rounded-[3rem] shadow-2xl relative border border-gray-100">
-              <button onClick={() => setSelectedProduct(null)} className="absolute top-6 right-6 z-10 p-2 bg-black text-white rounded-full">
+          <div className="fixed inset-0 z-[200] flex items-center justify-center p-4 bg-white/80 backdrop-blur-xl animate-in fade-in duration-300">
+            <div className="bg-white max-w-4xl w-full flex flex-col md:flex-row max-h-[85vh] overflow-hidden rounded-[2.5rem] md:rounded-[3.5rem] shadow-[0_50px_100px_rgba(0,0,0,0.1)] relative border border-gray-50">
+              <button onClick={() => setSelectedProduct(null)} className="absolute top-8 right-8 z-10 p-2 bg-black text-white rounded-full hover:rotate-90 transition-transform">
                 <X className="w-5 h-5" />
               </button>
               <div className="md:w-1/2 h-64 md:h-auto">
                 <img src={getFullImgUrl(selectedProduct)} className="w-full h-full object-cover" />
               </div>
-              <div className="md:w-1/2 p-8 md:p-16 flex flex-col justify-center">
-                <h2 className="text-4xl font-black mb-4 tracking-tighter uppercase leading-none">{selectedProduct.attributes?.name || selectedProduct.name}</h2>
-                <p className="text-gray-400 text-sm leading-relaxed mb-8">
-                  {selectedProduct.attributes?.description?.[0]?.children?.[0]?.text || "Premium selection from Siwa Studio."}
+              <div className="md:w-1/2 p-10 md:p-16 flex flex-col justify-center">
+                <h2 className="text-5xl font-black mb-6 tracking-tighter uppercase leading-none">{selectedProduct.attributes?.name || selectedProduct.name}</h2>
+                <p className="text-gray-400 text-sm leading-relaxed mb-10 italic">
+                  {selectedProduct.attributes?.description?.[0]?.children?.[0]?.text || "Experience the pure essence of Siwa Studio's premium collection."}
                 </p>
-                <div className="flex items-center justify-between mb-8">
+                <div className="flex items-center justify-between mb-10">
                   <span className="text-4xl font-black">${selectedProduct.attributes?.price || selectedProduct.price}</span>
                 </div>
                 <button 
                   onClick={() => { addToCart(selectedProduct); setSelectedProduct(null); }}
-                  className="w-full bg-black text-white py-5 rounded-2xl font-black text-lg hover:opacity-80 transition-all flex items-center justify-center gap-4"
+                  className="w-full bg-black text-white py-6 rounded-2xl font-black text-lg hover:opacity-80 transition-all flex items-center justify-center gap-4 shadow-xl"
                 >
                   ADD TO BAG <ArrowRight className="w-5 h-5" />
                 </button>
@@ -207,32 +210,32 @@ export default function ShopPage() {
           </div>
         )}
 
-        {/* --- SIDE CART --- */}
+        {/* Side Cart UI */}
         {cartOpen && (
           <div className="fixed inset-0 z-[300] flex justify-end">
             <div className="absolute inset-0 bg-black/10 backdrop-blur-sm" onClick={() => setCartOpen(false)} />
-            <div className="relative h-full w-full sm:w-[450px] bg-white shadow-2xl flex flex-col animate-in slide-in-from-right duration-500">
-              <div className="p-8 border-b border-gray-50 flex justify-between items-center">
-                <h2 className="text-2xl font-black uppercase">Your Bag <span className="text-gray-200">({cart.length})</span></h2>
-                <X className="w-6 h-6 cursor-pointer" onClick={() => setCartOpen(false)} />
+            <div className="relative h-full w-full sm:w-[480px] bg-white shadow-2xl flex flex-col animate-in slide-in-from-right duration-500">
+              <div className="p-10 border-b border-gray-50 flex justify-between items-center">
+                <h2 className="text-2xl font-black uppercase tracking-tighter italic">Your Bag <span className="text-gray-200">({cart.length})</span></h2>
+                <X className="w-8 h-8 cursor-pointer hover:scale-110 transition-transform" onClick={() => setCartOpen(false)} />
               </div>
 
-              <div className="flex-1 overflow-y-auto p-8 space-y-6">
+              <div className="flex-1 overflow-y-auto p-10 space-y-8">
                 {cart.length === 0 ? (
-                    <div className="h-full flex flex-col items-center justify-center text-gray-300 font-bold uppercase tracking-widest italic text-center px-10 leading-tight">Your collection is empty</div>
+                    <div className="h-full flex flex-col items-center justify-center text-gray-300 font-bold uppercase tracking-widest italic text-center px-10">Empty Bag</div>
                 ) : (
                   cart.map((item) => (
-                    <div key={item.id} className="flex gap-4 items-center">
-                        <div className="w-20 h-24 rounded-2xl overflow-hidden bg-gray-100 shrink-0 border border-gray-50">
+                    <div key={item.id} className="flex gap-6 items-center">
+                        <div className="w-24 h-28 rounded-3xl overflow-hidden bg-gray-50 shrink-0 border border-gray-50 shadow-sm">
                             <img src={getFullImgUrl(item)} className="w-full h-full object-cover" />
                         </div>
                         <div className="flex-1">
-                            <h4 className="font-black text-[11px] uppercase italic tracking-tight">{item.attributes?.name || item.name}</h4>
-                            <p className="text-gray-400 font-bold text-sm">${item.attributes?.price || item.price}</p>
-                            <div className="flex items-center gap-3 mt-2 bg-gray-50 w-fit px-3 py-1 rounded-full">
-                                <button onClick={() => updateQuantity(item.id, item.quantity - 1)} className="text-[10px] hover:text-red-500 transition-colors">-</button>
-                                <span className="text-[10px] font-black">{item.quantity}</span>
-                                <button onClick={() => updateQuantity(item.id, item.quantity + 1)} className="text-[10px] hover:text-green-500 transition-colors">+</button>
+                            <h4 className="font-black text-xs uppercase italic tracking-tight mb-1">{item.attributes?.name || item.name}</h4>
+                            <p className="text-gray-400 font-bold text-sm mb-4">${item.attributes?.price || item.price}</p>
+                            <div className="flex items-center gap-4 bg-gray-100 w-fit px-4 py-2 rounded-full shadow-inner">
+                                <button onClick={() => updateQuantity(item.id, item.quantity - 1)} className="text-xs font-bold">-</button>
+                                <span className="text-xs font-black">{item.quantity}</span>
+                                <button onClick={() => updateQuantity(item.id, item.quantity + 1)} className="text-xs font-bold">+</button>
                             </div>
                         </div>
                     </div>
@@ -241,16 +244,16 @@ export default function ShopPage() {
               </div>
 
               {cart.length > 0 && (
-                <div className="p-8 border-t border-gray-50 bg-[#FBFBFB]">
-                  <div className="flex justify-between mb-6">
+                <div className="p-10 border-t border-gray-50 bg-[#fdfdfd]">
+                  <div className="flex justify-between mb-8 items-end">
                     <span className="text-gray-400 font-bold uppercase text-[10px] tracking-widest">Subtotal</span>
-                    <span className="text-3xl font-black">${total.toFixed(2)}</span>
+                    <span className="text-4xl font-black tracking-tighter">${total.toFixed(2)}</span>
                   </div>
                   <button 
                     onClick={() => router.push("/checkout")}
-                    className="w-full bg-black text-white py-5 rounded-2xl font-black text-lg shadow-xl hover:opacity-90 transition-all"
+                    className="w-full bg-black text-white py-6 rounded-3xl font-black text-lg shadow-2xl hover:opacity-90 transition-all active:scale-95"
                   >
-                    CHECKOUT
+                    PROCEED TO CHECKOUT
                   </button>
                 </div>
               )}
