@@ -105,7 +105,7 @@ export default function ShopPage() {
         {/* Header Section */}
         <div className="mb-16 text-center md:text-left">
           <h1 className="text-5xl md:text-8xl font-black tracking-tighter uppercase leading-none italic mb-8">
-            Siwa <span className="text-gray-200 block md:inline">Studio.</span>
+            Siwa <span className="text-gray-200 block md:inline">Store.</span>
           </h1>
           
           <div className="flex flex-col md:flex-row gap-4 justify-between items-center bg-gray-50/50 p-4 rounded-[2rem] border border-gray-100">
