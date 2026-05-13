@@ -1,7 +1,7 @@
 import './globals.css';
 export const metadata = {
 
-  title: "Siwa Fragrances",
+  title: "eixra Fragrances - Luxury Perfumes Crafted with Passion",
   description: "Discover the elegance of Siwa Fragrances — luxury scents crafted with passion.",
   keywords: [
     "Siwa",
