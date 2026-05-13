@@ -44,14 +44,14 @@ export default function About() {
 
   return (
     <>
-      <img src="/About_Us.webp" className="w-full h-[400px] object-cover mt-30" />
+      <img src="/2.webp" className="w-full h-[400px] object-cover mt-30" />
 
       <div className="w-full">
         <div className="max-w-3xl mx-auto px-6 py-20">
           <h1 className="text-center text-3xl tracking-[4px] font-medium mb-10">ABOUT US</h1>
 
           <p className="text-gray-700 leading-7 mb-6">
-            Siwa Fragrances is an esteemed Egyptian maison, weaving heritage and identity into every bottle. 
+            ELIXIR Fragrances is an esteemed Egyptian maison, weaving heritage and identity into every bottle. 
             We exist to elevate your daily ritual with scents that are both a personal signature and a profound 
             connection to culture, all while embracing unparalleled comfort.
           </p>
@@ -101,7 +101,7 @@ export default function About() {
 
         <div className="max-w-5xl mx-auto py-24 px-6">
           <div className="grid md:grid-cols-2 gap-10 items-center">
-            <img src="/5.1.jpg" className="rounded-2xl w-full h-[350px] object-cover" />
+            <img src="/logo5.avif" className="rounded-2xl w-full h-[350px] object-cover" />
             <div>
               <h2 className="text-2xl font-semibold mb-4 tracking-wide">A Journey Through Scent</h2>
               <p className="text-gray-700 leading-7 mb-6">

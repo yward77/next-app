@@ -38,7 +38,7 @@ export default function Contact() {
   return (
     <>
       {/* صورة رئيسية */}
-      <img src="/Contact_Us.webp" className="md:w-full  md:h-[500px] mt-8 h-[300px] object-cover" />
+      <img src="bundles_1 (1).webp" className="md:w-full  md:h-[500px] mt-8 h-[300px] object-cover" />
 
       <div className="max-w-6xl mx-auto p-6 mb-8">
         <h1 className="text-5xl font-light text-center mb-4 mt-7">Contact Us</h1>
@@ -80,13 +80,13 @@ export default function Contact() {
         {/* معلومات الاتصال */}
         <div className="bg-gray-100 mt-7 p-6 rounded-2xl mb-8 text-gray-700 text-lg">
           <div className="flex items-center gap-4 mb-3 mt-6">
-            <FaEnvelope className="text-xl" /> info@example.com
+            <FaEnvelope className="text-xl" /> elixir@gmail.com
           </div>
           <div className="flex items-center gap-4 mb-3">
-            <FaPhone className="text-xl" /> +123 456 7890
+            <FaPhone className="text-xl" /> +20 0115 458265
           </div>
           <div className="flex items-center gap-4">
-            <FaMapMarkerAlt className="text-xl" /> 123 Street, City, Country
+            <FaMapMarkerAlt className="text-xl" /> abas al aqad Street, Cairo, egypt
           </div>
         </div>
  
