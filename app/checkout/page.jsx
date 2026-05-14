@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { ShoppingBag, ArrowLeft, User, Phone, MapPin, CheckCircle2 } from "lucide-react";
+import { ArrowLeft, User, Phone, MapPin, CheckCircle2, ShieldCheck, CreditCard, ShoppingBag } from "lucide-react";
 
 const API = "https://siwa-api.onrender.com";
 
@@ -17,7 +17,7 @@ export default function CheckoutPage() {
   useEffect(() => {
     const savedCart = JSON.parse(localStorage.getItem("siwa_cart")) || [];
     if (savedCart.length === 0) {
-      router.push("/"); // العودة للمتجر إذا كانت السلة فارغة
+      router.push("/");
     }
     setCart(savedCart);
   }, [router]);
@@ -45,6 +45,7 @@ export default function CheckoutPage() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (cart.length === 0) return;
     setLoading(true);
 
     const orderData = {
@@ -83,145 +84,157 @@ export default function CheckoutPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#FBFBFB] text-[#1D1D1F] font-sans selection:bg-black selection:text-white pb-20">
+    <div className="min-h-screen bg-[#030305] text-zinc-200 font-sans antialiased selection:bg-amber-400 selection:text-black">
       
-      {/* Header / Navigation */}
-      <div className="max-w-7xl mx-auto px-6 py-10 flex items-center justify-between">
-        <button 
-          onClick={() => router.back()} 
-          className="flex items-center gap-2 font-bold uppercase text-xs tracking-widest hover:opacity-50 transition-all"
-        >
-          <ArrowLeft className="w-4 h-4" /> Back to store
-        </button>
-        <h1 className="text-xl font-black uppercase italic tracking-tighter">Siwa Studio <span className="text-gray-300">Checkout</span></h1>
-        <div className="w-20 hidden md:block"></div> {/* Spacer */}
-      </div>
+      {/* Background Glow */}
+      <div className="fixed top-[-10%] left-[-10%] w-[500px] h-[500px] rounded-full bg-amber-500/5 blur-[120px] pointer-events-none" />
 
-      <main className="max-w-7xl mx-auto px-6 grid grid-cols-1 lg:grid-cols-12 gap-16">
-        
-        {/* Left Side: Information Form */}
-        <div className="lg:col-span-7">
-          <div className="mb-10">
-            <h2 className="text-4xl font-black tracking-tighter uppercase mb-2">Delivery Info.</h2>
-            <p className="text-gray-400 font-medium uppercase tracking-widest text-[10px]">Please provide your details for shipping</p>
+      {/* Header */}
+      <header className="sticky top-0 z-50 bg-[#030305]/80 backdrop-blur-md border-b border-zinc-900/50">
+        <div className="max-w-6xl mx-auto px-6 h-20 flex items-center justify-between">
+          <button 
+            onClick={() => router.back()} 
+            className="group flex items-center gap-2 text-[10px] font-bold uppercase tracking-[0.3em] text-zinc-500 hover:text-amber-400 transition-all"
+          >
+            <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" /> 
+            Back
+          </button>
+          <div className="flex flex-col items-center">
+            <h1 className="text-sm font-light uppercase tracking-[0.4em] text-zinc-100">ELIXIR <span className="text-zinc-600">STUDIO</span></h1>
+          </div>
+          <div className="w-10"></div>
+        </div>
+      </header>
+
+      <main className="max-w-6xl mx-auto px-6 py-10 lg:py-16 relative z-10">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
+          
+          {/* Information Form */}
+          <div className="lg:col-span-7 space-y-10">
+            <div>
+              <span className="text-[10px] tracking-[0.4em] text-amber-500 font-bold uppercase block mb-2">Checkout Process</span>
+              <h2 className="text-3xl md:text-4xl font-extralight uppercase tracking-widest text-zinc-100">Delivery <span className="text-zinc-500 italic">Info.</span></h2>
+            </div>
+
+            <form onSubmit={handleSubmit} className="space-y-8">
+              <div className="space-y-6">
+                {[
+                  { label: "Full Name", state: name, setState: setName, icon: User, placeholder: "ENTER YOUR NAME" },
+                  { label: "Phone Number", state: phone, setState: setPhone, icon: Phone, placeholder: "YOUR PHONE" }
+                ].map((input, i) => (
+                  <div key={i} className="space-y-2">
+                    <label className="text-[9px] font-bold uppercase tracking-[0.2em] text-zinc-500 ml-2">{input.label}</label>
+                    <div className="relative group">
+                      <input
+                        value={input.state}
+                        onChange={(e) => input.setState(e.target.value)}
+                        required
+                        placeholder={input.placeholder}
+                        className="w-full bg-zinc-900/40 border border-zinc-800 rounded-2xl px-6 py-5 text-sm font-light outline-none focus:border-amber-500/50 focus:bg-zinc-900/60 transition-all placeholder:text-zinc-700"
+                      />
+                      <input.icon className="absolute right-6 top-1/2 -translate-y-1/2 w-4 h-4 text-zinc-700 group-focus-within:text-amber-500 transition-colors" />
+                    </div>
+                  </div>
+                ))}
+
+                <div className="space-y-2">
+                  <label className="text-[9px] font-bold uppercase tracking-[0.2em] text-zinc-500 ml-2">Shipping Address</label>
+                  <div className="relative group">
+                    <textarea
+                      value={address}
+                      onChange={(e) => setAddress(e.target.value)}
+                      required
+                      placeholder="CITY, STREET, BUILDING..."
+                      className="w-full bg-zinc-900/40 border border-zinc-800 rounded-3xl px-6 py-5 h-32 text-sm font-light outline-none focus:border-amber-500/50 focus:bg-zinc-900/60 transition-all placeholder:text-zinc-700 resize-none"
+                    />
+                    <MapPin className="absolute right-6 bottom-6 w-4 h-4 text-zinc-700 group-focus-within:text-amber-500 transition-colors" />
+                  </div>
+                </div>
+              </div>
+
+              {/* Payment Status */}
+              <div className="bg-amber-500/5 p-6 rounded-3xl border border-amber-500/10 flex items-center gap-4">
+                <div className="w-10 h-10 bg-amber-500/10 rounded-xl flex items-center justify-center">
+                  <CreditCard className="w-5 h-5 text-amber-500" />
+                </div>
+                <div>
+                  <h4 className="text-[10px] font-bold uppercase tracking-widest text-zinc-300">Method</h4>
+                  <p className="text-xs text-zinc-500 uppercase tracking-tight">Cash on Delivery</p>
+                </div>
+                <CheckCircle2 className="w-5 h-5 text-amber-500 ml-auto" />
+              </div>
+            </form>
           </div>
 
-          <form onSubmit={handleSubmit} className="space-y-6">
-            <div className="relative group">
-              <User className="absolute left-5 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-300 group-focus-within:text-black transition-colors" />
-              <input
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                required
-                placeholder="FULL NAME"
-                className="w-full bg-white border border-gray-100 rounded-[1.5rem] pl-14 pr-6 py-5 outline-none focus:ring-4 focus:ring-black/5 transition-all font-bold text-sm uppercase tracking-tight"
-              />
-            </div>
-
-            <div className="relative group">
-              <Phone className="absolute left-5 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-300 group-focus-within:text-black transition-colors" />
-              <input
-                value={phone}
-                onChange={(e) => setPhone(e.target.value)}
-                required
-                placeholder="PHONE NUMBER"
-                className="w-full bg-white border border-gray-100 rounded-[1.5rem] pl-14 pr-6 py-5 outline-none focus:ring-4 focus:ring-black/5 transition-all font-bold text-sm tracking-tight"
-              />
-            </div>
-
-            <div className="relative group">
-              <MapPin className="absolute left-5 top-8 -translate-y-1/2 w-5 h-5 text-gray-300 group-focus-within:text-black transition-colors" />
-              <textarea
-                value={address}
-                onChange={(e) => setAddress(e.target.value)}
-                required
-                placeholder="FULL ADDRESS (CITY, STREET, BUILDING...)"
-                className="w-full bg-white border border-gray-100 rounded-[1.5rem] pl-14 pr-6 py-5 h-40 outline-none focus:ring-4 focus:ring-black/5 transition-all font-bold text-sm uppercase tracking-tight resize-none"
-              />
-            </div>
-
-            {/* Pay Button for Mobile (Hidden on Desktop) */}
-            <div className="lg:hidden pt-6">
-               <button
-                type="submit"
-                disabled={loading}
-                className="w-full bg-black text-white py-6 rounded-[2rem] font-black text-xl hover:opacity-90 disabled:bg-gray-200 transition-all shadow-xl shadow-black/10 flex items-center justify-center gap-3"
-              >
-                {loading ? "PROCESSING..." : "CONFIRM ORDER"}
-                <CheckCircle2 className="w-6 h-6" />
-              </button>
-            </div>
-          </form>
-        </div>
-
-        {/* Right Side: Order Summary */}
-        <div className="lg:col-span-5">
-          <div className="bg-white border border-gray-50 rounded-[3rem] p-8 md:p-12 shadow-[0_40px_80px_rgba(0,0,0,0.03)] sticky top-32">
-            <h3 className="text-2xl font-black uppercase italic mb-8 tracking-tighter">Your Bag <span className="text-gray-200">({cart.length})</span></h3>
-            
-            <div className="space-y-6 max-h-[400px] overflow-y-auto pr-4 custom-scrollbar mb-8">
-              {cart.map((item) => {
-                const p = item.attributes || item;
-                return (
-                  <div key={item.id} className="flex gap-4 items-center animate-in fade-in slide-in-from-bottom-2 duration-300">
-                    <div className="w-20 h-20 rounded-2xl overflow-hidden bg-gray-50 shrink-0 border border-gray-100">
-                      <img src={getImageUrl(item)} className="w-full h-full object-cover" alt="" />
+          {/* Order Summary */}
+          <div className="lg:col-span-5">
+            <div className="bg-zinc-900/30 backdrop-blur-md rounded-[2.5rem] p-8 border border-zinc-800/50 sticky top-32">
+              <div className="flex items-center justify-between mb-8">
+                <h3 className="text-sm font-light uppercase tracking-[0.3em] text-zinc-100">Your Bag</h3>
+                <span className="text-[10px] text-amber-500 font-bold uppercase tracking-widest">{cart.length} Items</span>
+              </div>
+              
+              <div className="space-y-5 max-h-[300px] overflow-y-auto pr-2 custom-scrollbar mb-8">
+                {cart.map((item) => (
+                  <div key={item.id} className="flex gap-4 items-center group">
+                    <div className="w-16 h-16 rounded-xl overflow-hidden bg-zinc-950 border border-zinc-800 shrink-0">
+                      <img src={getImageUrl(item)} className="w-full h-full object-cover opacity-80" alt="" />
                     </div>
-                    <div className="flex-1">
-                      <h4 className="font-black text-[11px] uppercase italic tracking-tight line-clamp-1">{p.name}</h4>
-                      <p className="text-gray-400 font-bold text-xs mt-1 tracking-widest">${Number(p.price).toFixed(2)}</p>
-                      
-                      <div className="flex items-center gap-4 mt-2 bg-gray-50 w-fit px-3 py-1 rounded-full border border-gray-100">
-                        <button onClick={() => updateQuantity(item.id, item.quantity - 1)} className="text-xs hover:text-red-500">-</button>
-                        <span className="text-[10px] font-black w-4 text-center">{item.quantity}</span>
-                        <button onClick={() => updateQuantity(item.id, item.quantity + 1)} className="text-[10px] hover:text-green-500">+</button>
+                    <div className="flex-1 min-w-0">
+                      <h4 className="font-light text-[10px] uppercase truncate tracking-widest text-zinc-300">{item.attributes?.name || item.name}</h4>
+                      <div className="flex items-center justify-between mt-1">
+                        <span className="text-amber-500/80 font-mono text-[10px]">${Number(item.attributes?.price || item.price).toFixed(2)}</span>
+                        
+                        <div className="flex items-center gap-3 bg-zinc-950 px-2 py-1 rounded-md border border-zinc-800">
+                          <button onClick={() => updateQuantity(item.id, item.quantity - 1)} className="text-xs text-zinc-500 hover:text-white">-</button>
+                          <span className="text-[9px] font-mono text-zinc-300">{item.quantity}</span>
+                          <button onClick={() => updateQuantity(item.id, item.quantity + 1)} className="text-xs text-zinc-500 hover:text-white">+</button>
+                        </div>
                       </div>
                     </div>
                   </div>
-                );
-              })}
-            </div>
+                ))}
+              </div>
 
-            <div className="space-y-4 border-t border-gray-50 pt-8">
-              <div className="flex justify-between items-center">
-                <span className="text-gray-400 font-bold uppercase text-[10px] tracking-[0.2em]">Subtotal</span>
-                <span className="font-bold text-lg">${total.toFixed(2)}</span>
+              <div className="space-y-3 pt-6 border-t border-zinc-800">
+                <div className="flex justify-between text-[10px] font-bold uppercase tracking-[0.2em] text-zinc-500">
+                  <span>Shipping</span>
+                  <span className="text-amber-500">Complimentary</span>
+                </div>
+                <div className="flex justify-between items-end pt-2">
+                  <span className="text-xs font-light uppercase tracking-widest text-zinc-100">Total</span>
+                  <span className="text-3xl font-light tracking-tighter text-amber-500">${total.toFixed(2)}</span>
+                </div>
               </div>
-              <div className="flex justify-between items-center">
-                <span className="text-gray-400 font-bold uppercase text-[10px] tracking-[0.2em]">Shipping</span>
-                <span className="text-green-500 font-bold text-[10px] uppercase tracking-widest">Free</span>
-              </div>
-              <div className="flex justify-between items-end pt-4">
-                <span className="text-black font-black uppercase text-sm tracking-tighter">Total Amount</span>
-                <span className="text-4xl font-black tracking-tighter">${total.toFixed(2)}</span>
+
+              <button
+                onClick={handleSubmit}
+                disabled={loading || cart.length === 0}
+                className="w-full mt-10 bg-amber-500 text-black py-5 rounded-2xl font-bold text-[10px] uppercase tracking-[0.3em] hover:bg-amber-400 active:scale-[0.98] disabled:bg-zinc-800 disabled:text-zinc-600 transition-all shadow-xl shadow-amber-500/10 flex items-center justify-center gap-3 group"
+              >
+                {loading ? "Processing..." : (
+                  <>
+                    Complete Order
+                    <CheckCircle2 className="w-4 h-4 transition-transform group-hover:scale-110" />
+                  </>
+                )}
+              </button>
+
+              <div className="mt-6 flex items-center justify-center gap-2 text-zinc-700">
+                <ShieldCheck className="w-3 h-3" />
+                <span className="text-[8px] font-bold uppercase tracking-[0.2em]">Encrypted & Secure</span>
               </div>
             </div>
-
-            {/* Pay Button for Desktop */}
-            <button
-              onClick={handleSubmit}
-              disabled={loading || cart.length === 0}
-              className="hidden lg:flex w-full mt-10 bg-black text-white py-6 rounded-[2rem] font-black text-xl hover:opacity-80 disabled:bg-gray-200 transition-all shadow-2xl shadow-black/10 items-center justify-center gap-3"
-            >
-              {loading ? "PROCESSING..." : "SUBMIT ORDER"}
-              <CheckCircle2 className="w-6 h-6" />
-            </button>
           </div>
         </div>
       </main>
 
-      {/* Custom Styles for Scrollbar */}
       <style jsx global>{`
-        .custom-scrollbar::-webkit-scrollbar {
-          width: 4px;
-        }
-        .custom-scrollbar::-webkit-scrollbar-track {
-          background: transparent;
-        }
-        .custom-scrollbar::-webkit-scrollbar-thumb {
-          background: #EAEAEA;
-          border-radius: 10px;
-        }
+        .custom-scrollbar::-webkit-scrollbar { width: 2px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #27272a; border-radius: 10px; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        main { animation: fadeIn 1s ease-in-out; }
       `}</style>
     </div>
   );

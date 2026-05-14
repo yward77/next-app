@@ -165,7 +165,7 @@ export default function Section() {
       {/* 5. قسم الـ Bundles المعلق ثلاثي الأبعاد (The Glass Frame) */}
       <div className="max-w-7xl mx-auto my-36 px-6 relative h-[650px] md:h-[750px] rounded-[40px] overflow-hidden shadow-2xl group/bundle">
         <img
-          src="/Bundles_1 (1).webp"
+          src="/bundles.webp"
           alt="Luxury Bundles"
           className="absolute inset-0 w-full h-full object-cover opacity-70 transition-transform duration-[4000ms] group-hover/bundle:scale-105"
         />

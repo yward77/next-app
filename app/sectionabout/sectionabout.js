@@ -1,14 +1,15 @@
 "use client";
 import Marquee from "react-fast-marquee";
 import { useEffect, useState, useRef } from "react";
+import { motion } from "framer-motion";
+import { ShieldCheck, Award, Sparkles, Zap } from "lucide-react";
 
 export default function About() {
-  const targets = [10, 50000, 100]; // الأرقام النهائية
+  const targets = [10, 50000, 100];
   const [numbers, setNumbers] = useState([0, 0, 0]);
   const sectionRef = useRef(null);
   const [startCounting, setStartCounting] = useState(false);
 
-  // تفعيل العد عند ظهور القسم في الشاشة
   useEffect(() => {
     const observer = new IntersectionObserver(
       ([entry]) => {
@@ -22,117 +23,157 @@ export default function About() {
     if (sectionRef.current) observer.observe(sectionRef.current);
   }, []);
 
-  // العداد
   useEffect(() => {
     if (!startCounting) return;
-
     const intervals = targets.map((target, idx) => {
       return setInterval(() => {
         setNumbers((prev) => {
           const nextNumbers = [...prev];
           if (nextNumbers[idx] < target) {
-            const increment = Math.ceil(target / 20); // زيادة صغيرة لتأخذ وقت أطول
+            const increment = Math.ceil(target / 40);
             nextNumbers[idx] = Math.min(nextNumbers[idx] + increment, target);
           }
           return nextNumbers;
         });
-      }, 50); // سرعة أبطأ
+      }, 40);
     });
-
     return () => intervals.forEach(clearInterval);
   }, [startCounting]);
 
   return (
-    <>
-      <img src="/2.webp" className="w-full h-[400px] object-cover mt-30" />
+    <div className="bg-[#030305] text-zinc-300 min-h-screen selection:bg-amber-500 selection:text-black font-sans">
+      
+      {/* Hero Image Section */}
+      <div className="relative h-[500px] w-full overflow-hidden">
+        <img src="/2.webp" className="w-full h-full object-cover opacity-60 scale-105" alt="Elixir Hero" />
+        <div className="absolute inset-0 bg-gradient-to-t from-[#030305] via-[#030305]/40 to-transparent" />
+        <div className="absolute bottom-10 left-0 w-full text-center">
+            <motion.h1 
+              initial={{ opacity: 0, y: 20 }} 
+              animate={{ opacity: 1, y: 0 }}
+              className="text-4xl md:text-6xl font-extralight tracking-[0.3em] text-white uppercase"
+            >
+              Our <span className="text-zinc-500 italic">Legacy</span>
+            </motion.h1>
+        </div>
+      </div>
 
-      <div className="w-full">
-        <div className="max-w-3xl mx-auto px-6 py-20">
-          <h1 className="text-center text-3xl tracking-[4px] font-medium mb-10">ABOUT US</h1>
-
-          <p className="text-gray-700 leading-7 mb-6">
+      {/* Main Content */}
+      <div className="max-w-4xl mx-auto px-6 py-24 relative">
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[1px] h-20 bg-amber-500/30" />
+        
+        <div className="text-center space-y-8 mb-20">
+          <span className="text-[10px] tracking-[0.5em] text-amber-500 font-bold uppercase">About Elixir Studio</span>
+          <p className="text-xl md:text-2xl font-light leading-relaxed text-zinc-200">
             ELIXIR Fragrances is an esteemed Egyptian maison, weaving heritage and identity into every bottle. 
-            We exist to elevate your daily ritual with scents that are both a personal signature and a profound 
-            connection to culture, all while embracing unparalleled comfort.
+            We exist to elevate your daily ritual with scents that are a personal signature.
           </p>
-
-          <p className="text-gray-700 leading-7 mb-8">
+          <p className="text-zinc-500 leading-relaxed font-light">
             Our pledge is to redefine luxury, making it authentically Egyptian and accessible. 
-            By fusing masterful craftsmanship with exceptional value, we earn your trust—proving 
-            local quality rivals the world's best.
+            By fusing masterful craftsmanship with exceptional value, we prove local quality rivals the world's best.
           </p>
-
-          <ul className="list-disc ml-6 space-y-2">
-            <li className="font-semibold">Exquisite Ingredients</li>
-            <li className="font-semibold">Inclusive Pricing</li>
-            <li className="font-semibold">Personalized Service</li>
-          </ul>
         </div>
 
-        <div className="w-full h-[200px] bg-[#18181f] py-4 md:mt-25 text-center flex items-center justify-center">
-          <Marquee direction="right" speed={100}>
-            <h1 className="text-white md:text-6xl text-2xl font-bold text-center uppercase tracking-widest">
-              Discover Luxury Fragrances • Exclusive Scents • Premium Perfumes For You
-            </h1>
-          </Marquee>
+        {/* Feature List */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 pt-10 border-t border-zinc-900">
+           {[
+             { icon: <Sparkles className="w-4 h-4 text-amber-500" />, text: "Exquisite Ingredients" },
+             { icon: <Zap className="w-4 h-4 text-amber-500" />, text: "Inclusive Pricing" },
+             { icon: <Award className="w-4 h-4 text-amber-500" />, text: "Personalized Service" }
+           ].map((item, i) => (
+             <div key={i} className="flex items-center justify-center gap-3 bg-zinc-900/20 p-4 rounded-2xl border border-zinc-800/50">
+               {item.icon}
+               <span className="text-[10px] font-bold uppercase tracking-widest">{item.text}</span>
+             </div>
+           ))}
         </div>
+      </div>
 
-        <div className="bg-gray-200 py-20">
-          <div className="max-w-5xl mx-auto grid md:grid-cols-3 gap-10">
-            <div className="text-center">
-              <img src="/9.1.jpg" className="w-full h-60 object-cover rounded-xl mb-4" />
-              <h3 className="font-semibold text-lg mb-2">Authentic Craftsmanship</h3>
-              <p className="text-gray-600 text-sm">Hand-crafted techniques inspired by heritage.</p>
-            </div>
+      {/* Marquee Section */}
+      <div className="w-full bg-[#08080a] border-y border-zinc-900 py-10 overflow-hidden">
+        <Marquee direction="right" speed={80} gradient={false}>
+          <h2 className="text-zinc-800 text-4xl md:text-7xl font-black uppercase tracking-tighter mx-10 opacity-40">
+            Discover Luxury Fragrances • Exclusive Scents • Premium Perfumes For You • 
+          </h2>
+        </Marquee>
+      </div>
 
-            <div className="text-center">
-              <img src="/9.2.jpg" className="w-full h-60 object-cover rounded-xl mb-4" />
-              <h3 className="font-semibold text-lg mb-2">Premium Ingredients</h3>
-              <p className="text-gray-600 text-sm">We use world-class scents for long-lasting aroma.</p>
-            </div>
+      {/* Philosophy Grid */}
+      <div className="py-32 px-6">
+        <div className="max-w-6xl mx-auto grid md:grid-cols-3 gap-8">
+          {[
+            { img: "/9.1.jpg", title: "Authentic Craftsmanship", desc: "Hand-crafted techniques inspired by heritage." },
+            { img: "/9.2.jpg", title: "Premium Ingredients", desc: "World-class scents for long-lasting aroma." },
+            { img: "/9.3.jpg", title: "Modern Aesthetic", desc: "Designed to look beautiful in every setting." }
+          ].map((card, i) => (
+            <motion.div 
+              key={i}
+              whileHover={{ y: -10 }}
+              className="group bg-zinc-900/10 border border-zinc-900 rounded-[2.5rem] p-4 transition-all hover:border-amber-500/20"
+            >
+              <div className="h-72 w-full rounded-[2rem] overflow-hidden mb-6">
+                <img src={card.img} className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700" alt="" />
+              </div>
+              <div className="px-4 pb-4">
+                <h3 className="font-light text-zinc-100 uppercase tracking-widest text-sm mb-2">{card.title}</h3>
+                <p className="text-zinc-600 text-xs font-light leading-relaxed">{card.desc}</p>
+              </div>
+            </motion.div>
+          ))}
+        </div>
+      </div>
 
-            <div className="text-center">
-              <img src="/9.3.jpg" className="w-full h-60 object-cover rounded-xl mb-4" />
-              <h3 className="font-semibold text-lg mb-2">Modern Aesthetic</h3>
-              <p className="text-gray-600 text-sm">Designed to look beautiful in every setting.</p>
-            </div>
+      {/* Journey Section */}
+      <div className="max-w-6xl mx-auto py-24 px-6 border-t border-zinc-900/50">
+        <div className="grid md:grid-cols-2 gap-20 items-center">
+          <div className="relative group">
+            <div className="absolute -inset-4 bg-amber-500/5 rounded-3xl blur-2xl group-hover:bg-amber-500/10 transition-all" />
+            <img src="/About_Us.webp" className="relative rounded-2xl w-full h-[450px] object-cover border border-zinc-800 shadow-2xl" />
           </div>
-        </div>
-
-        <div className="max-w-5xl mx-auto py-24 px-6">
-          <div className="grid md:grid-cols-2 gap-10 items-center">
-            <img src="/About_Us.webp" className="rounded-2xl w-full h-[350px] object-cover" />
-            <div>
-              <h2 className="text-2xl font-semibold mb-4 tracking-wide">A Journey Through Scent</h2>
-              <p className="text-gray-700 leading-7 mb-6">
-                Every fragrance tells a story—crafted with passion and inspired by the heart of Egyptian roots. 
-                Our perfumes blend modern luxury with cultural authenticity.
-              </p>
-            </div>
-          </div>
-        </div>
-
-        <div ref={sectionRef} className="bg-black text-white py-20 px-6 text-center mb-12">
-          <h2 className="text-2xl font-semibold mb-4 tracking-wide">Why Choose Us?</h2>
-          <p className="max-w-2xl mx-auto text-gray-300 mb-8 leading-7">
-            We focus on quality, authenticity, and delivering an unforgettable experience with every product.
-          </p>
-          <div className="flex justify-center gap-10 flex-wrap">
-            <div>
-              <h3 className="text-4xl mb-2 font-bold ">{numbers[0]}+</h3>
-              <p className="text-gray-400 text-sm">Years of Experience</p>
-            </div>
-            <div>
-              <h3 className="text-4xl mb-2 font-bold">{numbers[1].toLocaleString()}+</h3>
-              <p className="text-gray-400 text-sm">Happy Customers</p>
-            </div>
-            <div>
-              <h3 className="text-4xl mb-2 font-bold">{numbers[2]}%</h3>
-              <p className="text-gray-400 text-sm">Premium Quality</p>
-            </div>
+          <div className="space-y-6">
+            <h2 className="text-3xl font-extralight tracking-[0.2em] uppercase text-zinc-100">A Journey Through <span className="text-amber-500 italic font-normal">Scent</span></h2>
+            <p className="text-zinc-400 font-light leading-loose">
+              Every fragrance tells a story—crafted with passion and inspired by the heart of Egyptian roots. 
+              Our perfumes blend modern luxury with cultural authenticity, ensuring each spray is a moment of pure art.
+            </p>
+            <div className="h-[1px] w-20 bg-amber-500/50" />
           </div>
         </div>
       </div>
-    </>
+
+      {/* Statistics Section (The Counter) */}
+      <div ref={sectionRef} className="bg-zinc-950 py-32 px-6 border-t border-zinc-900 overflow-hidden relative">
+        <div className="absolute top-0 right-0 w-[400px] h-[400px] bg-amber-500/5 blur-[120px] rounded-full" />
+        
+        <div className="relative z-10 max-w-6xl mx-auto">
+          <div className="text-center mb-16">
+            <h2 className="text-2xl font-extralight uppercase tracking-[0.4em] text-zinc-100 mb-4">Why Choose Us?</h2>
+            <p className="max-w-xl mx-auto text-zinc-500 text-xs font-light uppercase tracking-widest leading-relaxed">
+              Excellence is not an act, but a habit we cultivate in every bottle.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-12 max-w-4xl mx-auto">
+            <div className="space-y-2">
+              <h3 className="text-6xl font-light tracking-tighter text-amber-500">{numbers[0]}+</h3>
+              <p className="text-[10px] uppercase tracking-[0.3em] font-bold text-zinc-600">Years of Experience</p>
+            </div>
+            <div className="space-y-2">
+              <h3 className="text-6xl font-light tracking-tighter text-amber-500">{numbers[1].toLocaleString()}+</h3>
+              <p className="text-[10px] uppercase tracking-[0.3em] font-bold text-zinc-600">Happy Customers</p>
+            </div>
+            <div className="space-y-2">
+              <h3 className="text-6xl font-light tracking-tighter text-amber-500">{numbers[2]}%</h3>
+              <p className="text-[10px] uppercase tracking-[0.3em] font-bold text-zinc-600">Premium Quality</p>
+            </div>
+          </div>
+        </div>
+
+        <div className="mt-24 pt-10 border-t border-zinc-900/50 flex flex-col items-center">
+            <ShieldCheck className="w-8 h-8 text-zinc-800 mb-4" />
+            <span className="text-[9px] uppercase tracking-[0.5em] text-zinc-700 font-bold">Encrypted & Certified Authentic</span>
+        </div>
+      </div>
+    </div>
   );
 }
