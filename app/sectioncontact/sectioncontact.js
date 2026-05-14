@@ -38,7 +38,7 @@ export default function Contact() {
   return (
     <>
       {/* صورة رئيسية */}
-      <img src="bundles_1 (1).webp" className="md:w-full  md:h-[500px] mt-8 h-[300px] object-cover" />
+      <img src="bundles.webp" className="md:w-full  md:h-[500px] mt-8 h-[300px] object-cover" />
 
       <div className="max-w-6xl mx-auto p-6 mb-8">
         <h1 className="text-5xl font-light text-center mb-4 mt-7">Contact Us</h1>
