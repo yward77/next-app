@@ -22,7 +22,7 @@ export default function Contact() {
       });
 
       if (response.ok) {
-        setStatus("Message sent successfully!");
+        setStatus("Message sent successfully! ✦");
         setType("success");
         e.target.reset();
       } else {
@@ -36,101 +36,128 @@ export default function Contact() {
   };
 
   return (
-    <>
-      {/* صورة رئيسية */}
-      <img src="bundles.webp" className="md:w-full  md:h-[500px] mt-8 h-[300px] object-cover" />
+    <div className="w-full bg-[#030305] text-zinc-200 min-h-screen overflow-hidden select-none font-sans antialiased relative pt-[110px]">
+      
+      {/* هالة ضوئية خلفية تمنح الفورم طابعاً سينمائياً */}
+      <div className="absolute top-[40%] left-1/2 transform -translate-x-1/2 w-[500px] h-[500px] rounded-full bg-amber-500/5 blur-[120px] pointer-events-none" />
 
-      <div className="max-w-6xl mx-auto p-6 mb-8">
-        <h1 className="text-5xl font-light text-center mb-4 mt-7">Contact Us</h1>
-        <p className="text-center text-gray-600 mb-6 text-lg">
-          We'd love to hear from you! Fill out the form below or reach us through our social media.
-        </p>
+      {/* 1. الصورة الرئيسية العلوية المعدلة المسار */}
+      <div className="relative w-full h-[300px] md:h-[450px] overflow-hidden bg-black">
+        <img 
+          src="/bundles.webp" 
+          alt="Contact Luxury Banner" 
+          className="w-full h-full object-cover opacity-60 transition-transform duration-[4000ms] hover:scale-105" 
+        />
+        <div className="absolute inset-0 bg-gradient-to-b from-transparent to-[#030305]" />
+      </div>
 
-        {/* فقرات إضافية */}
-        <div className="text-gray-700 mb-8 space-y-3 text-center">
-          <p>
-            Our team is available Monday to Friday, 9 AM to 6 PM. We aim to respond to all inquiries within 24 hours.
-          </p>
-          <p>
-            Please make sure to provide a valid email address so we can get back to you efficiently.
-          </p>
-          <p>
-            For urgent matters, you can also contact us via phone during business hours.
-          </p>
-          <p>
-            Follow us on our social media channels to get the latest updates and announcements.
-          </p>
+      <div className="max-w-5xl mx-auto p-6 mb-20 relative z-10">
+        
+        {/* 2. العناوين الرئيسية */}
+        <div className="text-center space-y-4 my-12">
+          <span className="text-[10px] tracking-[0.6em] text-amber-500/80 font-bold uppercase block">
+            Get In Touch
+          </span>
+          <h1 className="text-4xl md:text-6xl font-extralight tracking-[0.2em] uppercase text-zinc-100">
+            Contact Us
+          </h1>
+          <div className="w-12 h-[1px] bg-amber-500/30 mx-auto mt-4"></div>
         </div>
 
-        {/* شريط متحرك */}
-        <Marquee gradient={false} speed={50} className="mb-38 mt-20 bg-white p-4 rounded-lg">
-          <img src="/1.1.avif" alt="logo1" className="md:w-[300px] md:h-[300px] w-[200px] mx-4 object-cover" />
-          <img src="/1.2.avif" alt="logo2" className="md:w-[300px] md:h-[300px] w-[200px] mx-4 object-cover" />
-          <img src="/1.3.avif" alt="logo3" className="md:w-[300px] md:h-[300px] w-[200px] mx-4 object-cover" />
-          <img src="/1.4.avif" alt="logo4" className="md:w-[300px] md:h-[300px] w-[200px] mx-4 object-cover" />
-        </Marquee>
-
-        {/* أيقونات وسائل التواصل الاجتماعي */}
-        <div className="flex justify-center gap-8 mb-8 text-5xl">
-          <FaFacebookF className="text-gray-500 cursor-pointer hover:scale-110 transition-transform" />
-          <FaTwitter className="text-gray-500 cursor-pointer hover:scale-110 transition-transform" />
-          <FaInstagram className="text-gray-500 cursor-pointer hover:scale-110 transition-transform" />
+        {/* 3. نصوص تفاصيل التواصل المعمارية الفاخرة */}
+        <div className="text-zinc-400 max-w-2xl mx-auto space-y-4 text-center font-light text-sm md:text-base leading-relaxed tracking-wide">
+          <p>Our dedicated concierge team is at your service Monday to Friday, 9 AM to 6 PM.</p>
+          <p>We craft each response with care and aim to reply to your inquiry within 24 hours.</p>
+          <p>For immediate assistance regarding private orders, you may reach our boutique directly via phone.</p>
         </div>
 
-        {/* معلومات الاتصال */}
-        <div className="bg-gray-100 mt-7 p-6 rounded-2xl mb-8 text-gray-700 text-lg">
-          <div className="flex items-center gap-4 mb-3 mt-6">
-            <FaEnvelope className="text-xl" /> elixir@gmail.com
+        {/* 4. شريط الـ Marquee المطور بالثيم المظلم */}
+        <div className="w-full my-24 relative before:absolute before:inset-0 before:bg-gradient-to-r before:from-[#030305] before:via-transparent before:to-[#030305] before:z-10 before:pointer-events-none">
+          <Marquee gradient={false} speed={40}>
+            {["/1.1.avif", "/1.2.avif", "/1.3.avif", "/1.4.avif"].map((img, idx) => (
+              <div key={idx} className="mx-6 overflow-hidden rounded-2xl border border-zinc-900 bg-black aspect-square w-[180px] md:w-[260px] shadow-2xl opacity-70 hover:opacity-100 transition-opacity duration-500">
+                <img src={img} alt={`Gallery ${idx}`} className="w-full h-full object-cover" />
+              </div>
+            ))}
+          </Marquee>
+        </div>
+
+        {/* 5. أيقونات التواصل الاجتماعي المشعة بنعومة */}
+        <div className="flex justify-center gap-10 my-16 text-3xl md:text-4xl">
+          <FaFacebookF className="text-zinc-600 cursor-pointer hover:text-amber-400 hover:scale-110 transition-all duration-300" />
+          <FaTwitter className="text-zinc-600 cursor-pointer hover:text-amber-400 hover:scale-110 transition-all duration-300" />
+          <FaInstagram className="text-zinc-600 cursor-pointer hover:text-amber-400 hover:scale-110 transition-all duration-300" />
+        </div>
+
+        {/* 6. كارت معلومات الاتصال الزجاجي */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 bg-zinc-950/40 border border-zinc-900/60 p-8 rounded-3xl backdrop-blur-md my-16 text-zinc-300 text-sm md:text-base shadow-2xl tracking-wide max-w-4xl mx-auto">
+          <div className="flex items-center gap-4 py-3 justify-center md:justify-start">
+            <FaEnvelope className="text-amber-500/70 text-lg flex-shrink-0" /> 
+            <span className="font-light">elixir@gmail.com</span>
           </div>
-          <div className="flex items-center gap-4 mb-3">
-            <FaPhone className="text-xl" /> +20 0115 458265
+          <div className="flex items-center gap-4 py-3 justify-center md:justify-start border-y md:border-y-0 md:border-x border-zinc-900/80 px-0 md:px-6">
+            <FaPhone className="text-amber-500/70 text-lg flex-shrink-0" /> 
+            <span className="font-light" dir="ltr">+20 0115 458265</span>
           </div>
-          <div className="flex items-center gap-4">
-            <FaMapMarkerAlt className="text-xl" /> abas al aqad Street, Cairo, egypt
+          <div className="flex items-center gap-4 py-3 justify-center md:justify-start">
+            <FaMapMarkerAlt className="text-amber-500/70 text-lg flex-shrink-0" /> 
+            <span className="font-light text-center md:text-left">Abas Al Aqad Street, Cairo, Egypt</span>
           </div>
         </div>
  
-        {/* الفورم */}
+        {/* 7. فورم المراسلة الزجاجي المتطور (Ultra-Luxury Glass Form) */}
+        <div className="max-w-xl mx-auto mt-24">
+          <form onSubmit={handleSubmit} className="flex flex-col gap-6 bg-gradient-to-b from-zinc-900/30 to-zinc-950/60 border border-zinc-900/80 p-8 md:p-10 rounded-3xl backdrop-blur-xl shadow-[0_30px_60px_rgba(0,0,0,0.8)]">
+            
+            <div className="space-y-1 mb-4">
+              <h3 className="text-xl font-light text-zinc-100 uppercase tracking-widest">Send a Message</h3>
+              <p className="text-xs text-zinc-500 font-light">We will review your letter and reach back shortly.</p>
+            </div>
 
-<form onSubmit={handleSubmit} className="flex flex-col md:gap-6 gap-4 max-w-xl mx-auto bg-white/20 backdrop-blur-md p-8 rounded-3-lg mt-28">
-  <input
-    type="text"
-    name="name"
-    placeholder="Your Name"
-    required
-    className="  p-4 w-full rounded-xl focus:outline-none focus:ring-2 focus:ring-white/70 focus:border-transparent text-lg text-black placeholder-gray "
-  />
-  <input
-    type="email"
-    name="email"
-    placeholder="Email"
-    required
-    className="border-b-2 border-white/50 p-4 w-full rounded-xl focus:outline-none focus:ring-2 focus:ring-white/70 focus:border-transparent text-lg text-black placeholder-gray "
-  />
-  <textarea
-    name="message"
-    placeholder="Your Message"
-    required
-    className="border border-white/50 p-4 w-full rounded-xl focus:outline-none focus:ring-2 focus:ring-white/70 focus:border-transparent text-lg text-black placeholder-gray  h-48 resize-none"
-  ></textarea>
-  <button
-    type="submit"
-    className="bg-black/80  text-white py-4 rounded-2xl hover:bg-black/90 transition-colors text-lg font-semibold shadow-md"
-  >
-    Send Message
-  </button>
-</form>
+            <input
+              type="text"
+              name="name"
+              placeholder="Your Name"
+              required
+              className="w-full bg-[#09090e]/60 text-zinc-100 border border-zinc-900 p-4 rounded-xl focus:outline-none focus:border-amber-500/50 transition-colors text-sm font-light tracking-wide placeholder-zinc-600"
+            />
+            <input
+              type="email"
+              name="email"
+              placeholder="Email Address"
+              required
+              className="w-full bg-[#09090e]/60 text-zinc-100 border border-zinc-900 p-4 rounded-xl focus:outline-none focus:border-amber-500/50 transition-colors text-sm font-light tracking-wide placeholder-zinc-600"
+            />
+            <textarea
+              name="message"
+              placeholder="Your Message"
+              required
+              className="w-full bg-[#09090e]/60 text-zinc-100 border border-zinc-900 p-4 rounded-xl focus:outline-none focus:border-amber-500/50 transition-colors text-sm font-light tracking-wide placeholder-zinc-600 h-40 resize-none"
+            ></textarea>
 
-        {status && (
-          <div
-            className={`mt-6 p-4 rounded-lg text-white shadow-md text-center text-lg ${
-              type === "success" ? "bg-green-500" : "bg-red-500"
-            }`}
-          >
-            {status}
-          </div>
-        )}
+            <button
+              type="submit"
+              className="w-full py-4 mt-2 text-xs tracking-[0.4em] uppercase font-medium border border-amber-500/30 text-amber-400 bg-amber-950/10 rounded-xl hover:bg-amber-400 hover:text-black hover:border-amber-400 transition-all duration-500 shadow-xl shadow-amber-950/20 active:scale-[0.98]"
+            >
+              Send Message
+            </button>
+          </form>
+
+          {/* رسائل الحالة الإشعارية الفاخرة */}
+          {status && (
+            <div
+              className={`mt-6 p-4 rounded-xl text-sm tracking-widest font-light shadow-2xl text-center backdrop-blur-md border animate-fade-in ${
+                type === "success" 
+                  ? "bg-emerald-950/30 text-emerald-400 border-emerald-500/20" 
+                  : "bg-rose-950/30 text-rose-400 border-rose-500/20"
+              }`}
+            >
+              {status}
+            </div>
+          )}
+        </div>
+
       </div>
-    </>
+    </div>
   );
 }

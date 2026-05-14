@@ -101,7 +101,7 @@ export default function About() {
 
         <div className="max-w-5xl mx-auto py-24 px-6">
           <div className="grid md:grid-cols-2 gap-10 items-center">
-            <img src="/logo5.avif" className="rounded-2xl w-full h-[350px] object-cover" />
+            <img src="/About_Us.webp" className="rounded-2xl w-full h-[350px] object-cover" />
             <div>
               <h2 className="text-2xl font-semibold mb-4 tracking-wide">A Journey Through Scent</h2>
               <p className="text-gray-700 leading-7 mb-6">
