@@ -1,20 +1,23 @@
 "use client";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { useRouter } from "next/navigation";
-import { ShoppingBag, X, Plus, Minus, Info, Search } from "lucide-react";
+import { ShoppingBag, X, Plus, Minus, Search, ChevronDown } from "lucide-react";
 
 const API = "https://siwa-api.onrender.com";
 
 export default function ShopPage() {
   const [isMounted, setIsMounted] = useState(false);
   const [products, setProducts] = useState([]);
-  const [filtered, setFiltered] = useState([]);
   const [loading, setLoading] = useState(true);
   const [cart, setCart] = useState([]);
   const [cartOpen, setCartOpen] = useState(false);
+  
+  // حالات البحث والترتيب
+  const [searchQuery, setSearchQuery] = useState("");
+  const [sortBy, setSortBy] = useState("default");
+
   const router = useRouter();
 
-  // 1. معالجة الـ Hydration وتحميل السلة
   useEffect(() => {
     setIsMounted(true);
     const savedCart = JSON.parse(localStorage.getItem("siwa_cart")) || [];
@@ -24,13 +27,49 @@ export default function ShopPage() {
       .then((res) => res.json())
       .then((data) => {
         setProducts(data?.data || []);
-        setFiltered(data?.data || []);
         setLoading(false);
       })
       .catch(() => setLoading(false));
   }, []);
 
-  // 2. دوال التحكم بالسلة
+  // 1. استخراج البيانات بشكل آمن (Helper)
+  const getProductInfo = (item) => {
+    const attr = item?.attributes || item;
+    const price = attr?.price || 0;
+    const name = attr?.name || "Premium Fragrance";
+    const imgData = attr?.imag?.data?.[0]?.attributes || attr?.imag?.[0];
+    const imgUrl = imgData?.url 
+      ? (imgData.url.startsWith("http") ? imgData.url : `${API}${imgData.url}`) 
+      : "/placeholder.png";
+    
+    return { price, name, imgUrl };
+  };
+
+  // 2. منطق البحث والترتيب (Memoized لضمان الأداء)
+  const filteredAndSortedProducts = useMemo(() => {
+    let result = [...products];
+
+    // منطق البحث
+    if (searchQuery) {
+      result = result.filter((p) => {
+        const { name } = getProductInfo(p);
+        return name.toLowerCase().includes(searchQuery.toLowerCase());
+      });
+    }
+
+    // منطق الترتيب
+    if (sortBy === "price-low") {
+      result.sort((a, b) => getProductInfo(a).price - getProductInfo(b).price);
+    } else if (sortBy === "price-high") {
+      result.sort((a, b) => getProductInfo(b).price - getProductInfo(a).price);
+    } else if (sortBy === "name") {
+      result.sort((a, b) => getProductInfo(a).name.localeCompare(getProductInfo(b).name));
+    }
+
+    return result;
+  }, [products, searchQuery, sortBy]);
+
+  // 3. دوال السلة
   const addToCart = (product) => {
     const newCart = [...cart];
     const index = newCart.findIndex((i) => i.id === product.id);
@@ -52,19 +91,6 @@ export default function ShopPage() {
   const updateCartState = (newCart) => {
     setCart(newCart);
     localStorage.setItem("siwa_cart", JSON.stringify(newCart));
-  };
-
-  // 3. استخراج البيانات (السعر والصورة) بشكل آمن
-  const getProductInfo = (item) => {
-    const attr = item?.attributes || item;
-    const price = attr?.price || 0;
-    const name = attr?.name || "Premium Fragrance";
-    const imgData = attr?.imag?.data?.[0]?.attributes || attr?.imag?.[0];
-    const imgUrl = imgData?.url 
-      ? (imgData.url.startsWith("http") ? imgData.url : `${API}${imgUrl}`) 
-      : "/placeholder.png";
-    
-    return { price, name, imgUrl };
   };
 
   const total = cart.reduce((acc, item) => {
@@ -91,18 +117,54 @@ export default function ShopPage() {
       </button>
 
       <main className="max-w-7xl mx-auto px-6 pb-24">
-        <div className="mb-16">
-          <span className="text-[10px] tracking-[0.5em] text-amber-500 uppercase font-bold block mb-2 mt-25">ELIXIR Boutique</span>
-          <h1 className="text-5xl md:text-8xl font-extralight tracking-tighter uppercase text-white opacity-90">
-            Store<span className="text-zinc-700">.</span>
-          </h1>
+        {/* Header Section */}
+        <div className="mb-12 flex flex-col md:flex-row md:items-end justify-between gap-8">
+          <div className="mt-10">
+            <span className="text-[10px] tracking-[0.5em] text-amber-500 uppercase font-bold block mb-2">ELIXIR Boutique</span>
+            <h1 className="text-5xl md:text-7xl font-extralight tracking-tighter uppercase text-white opacity-90">
+              Collections<span className="text-zinc-700">.</span>
+            </h1>
+          </div>
+
+          {/* Search & Sort Controls */}
+          <div className="flex flex-col sm:flex-row gap-4 items-center w-full md:w-auto">
+            {/* Input Search */}
+            <div className="relative w-full sm:w-64">
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-zinc-500" />
+              <input 
+                type="text"
+                placeholder="Search fragrances..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="w-full bg-zinc-900/50 border border-zinc-800 rounded-xl py-3 pl-10 pr-4 text-xs font-light outline-none focus:border-amber-500/50 transition-colors"
+              />
+            </div>
+
+            {/* Sort Dropdown */}
+            <div className="relative w-full sm:w-48">
+              <select 
+                value={sortBy}
+                onChange={(e) => setSortBy(e.target.value)}
+                className="w-full bg-zinc-900/50 border border-zinc-800 rounded-xl py-3 px-4 text-[10px] uppercase tracking-widest font-light outline-none appearance-none cursor-pointer focus:border-amber-500/50"
+              >
+                <option value="default">Sort By</option>
+                <option value="price-low">Price: Low to High</option>
+                <option value="price-high">Price: High to Low</option>
+                <option value="name">A - Z</option>
+              </select>
+              <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-3 h-3 text-zinc-500 pointer-events-none" />
+            </div>
+          </div>
         </div>
 
+        {/* Products Grid */}
         {loading ? (
-          <div className="py-20 text-center text-zinc-700 tracking-widest animate-pulse">COLLECTING ESSENCES...</div>
+          <div className="py-40 text-center text-zinc-700 tracking-[0.3em] text-xs animate-pulse uppercase">Refining Essences...</div>
+        ) : filteredAndSortedProducts.length === 0 ? (
+          <div className="py-40 text-center text-zinc-500 text-sm font-light">No products found matching your search.</div>
         ) : (
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-8">
-            {filtered.map((product) => {
+            {filteredAndSortedProducts.map((product) => {
               const { price, name, imgUrl } = getProductInfo(product);
               return (
                 <div key={product.id} className="group flex flex-col bg-zinc-900/10 border border-zinc-900/50 p-3 rounded-[30px] hover:border-amber-500/30 transition-all">
@@ -110,13 +172,13 @@ export default function ShopPage() {
                     <img src={imgUrl} alt={name} className="w-full h-full object-cover opacity-80 group-hover:scale-110 transition-transform duration-1000" />
                     <button 
                       onClick={() => addToCart(product)}
-                      className="absolute bottom-4 inset-x-4 bg-white text-black py-3 rounded-xl text-[10px] font-bold uppercase opacity-0 group-hover:opacity-100 transition-opacity translate-y-2 group-hover:translate-y-0 duration-300"
+                      className="absolute bottom-4 inset-x-4 bg-white text-black py-3 rounded-xl text-[10px] font-bold uppercase opacity-0 group-hover:opacity-100 transition-all translate-y-2 group-hover:translate-y-0 duration-300"
                     >
                       Add To Bag
                     </button>
                   </div>
-                  <div className="px-2">
-                    <h3 className="text-xs font-light tracking-wide uppercase text-zinc-400 mb-1">{name}</h3>
+                  <div className="px-2 pb-2">
+                    <h3 className="text-[11px] font-light tracking-wide uppercase text-zinc-400 mb-1 truncate">{name}</h3>
                     <p className="text-lg font-light text-amber-400">${price}</p>
                   </div>
                 </div>
@@ -126,11 +188,10 @@ export default function ShopPage() {
         )}
       </main>
 
-      {/* الحقيبة الجانبية - Sidebar Cart (إصلاح مشكلة الصورة) */}
+      {/* Sidebar Cart */}
       {cartOpen && (
         <div className="fixed inset-0 z-[10000] flex justify-end">
           <div className="absolute inset-0 bg-black/80 backdrop-blur-md" onClick={() => setCartOpen(false)} />
-          
           <div className="relative w-full max-w-[420px] bg-[#050507] h-full flex flex-col shadow-2xl border-l border-zinc-900 animate-in slide-in-from-right duration-500">
             {/* Header */}
             <div className="p-8 border-b border-zinc-900 flex justify-between items-center bg-[#050507]">
@@ -161,21 +222,13 @@ export default function ShopPage() {
                       <div className="flex-1">
                         <h4 className="text-[11px] uppercase tracking-wider text-zinc-300 mb-1 line-clamp-1">{name}</h4>
                         <p className="text-amber-400 font-light text-sm mb-3">${price}</p>
-                        
-                        {/* أزرار التحكم بالكمية - كما في طلبك */}
                         <div className="flex items-center gap-4 bg-zinc-950 border border-zinc-900 w-fit px-3 py-1 rounded-lg">
-                          <button onClick={() => updateQuantity(item.id, item.quantity - 1)} className="text-zinc-600 hover:text-white transition-colors">
-                            <Minus className="w-3 h-3" />
-                          </button>
+                          <button onClick={() => updateQuantity(item.id, item.quantity - 1)} className="text-zinc-600 hover:text-white transition-colors"><Minus className="w-3 h-3" /></button>
                           <span className="text-xs font-mono text-zinc-400 min-w-[15px] text-center">{item.quantity}</span>
-                          <button onClick={() => updateQuantity(item.id, item.quantity + 1)} className="text-zinc-600 hover:text-white transition-colors">
-                            <Plus className="w-3 h-3" />
-                          </button>
+                          <button onClick={() => updateQuantity(item.id, item.quantity + 1)} className="text-zinc-600 hover:text-white transition-colors"><Plus className="w-3 h-3" /></button>
                         </div>
                       </div>
-                      <button onClick={() => updateQuantity(item.id, 0)} className="self-start text-zinc-800 hover:text-zinc-500">
-                        <X className="w-4 h-4" />
-                      </button>
+                      <button onClick={() => updateQuantity(item.id, 0)} className="self-start text-zinc-800 hover:text-zinc-500"><X className="w-4 h-4" /></button>
                     </div>
                   );
                 })
