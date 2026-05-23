@@ -3,7 +3,8 @@ import React, { useState, useEffect, useMemo } from "react";
 import { useRouter } from "next/navigation";
 import { ShoppingBag, X, Plus, Minus, Search, ChevronDown } from "lucide-react";
 
-const API = "https://siwa-api.onrender.com";
+// التحديث هنا: تم الانتقال إلى رابط السيرفر الجديد والنشط بنجاح
+const API = "https://siwa-api-w8n7.onrender.com";
 
 export default function ShopPage() {
   const [isMounted, setIsMounted] = useState(false);

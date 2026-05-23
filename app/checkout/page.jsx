@@ -4,7 +4,8 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { ArrowLeft, User, Phone, MapPin, CheckCircle2, ShieldCheck, CreditCard, ShoppingBag } from "lucide-react";
 
-const API = "https://siwa-api.onrender.com";
+// التحديث هنا: تم تعديل الرابط إلى خادم الإنتاج النشط والمستقر
+const API = "https://siwa-api-w8n7.onrender.com";
 
 export default function CheckoutPage() {
   const router = useRouter();
@@ -44,8 +45,8 @@ export default function CheckoutPage() {
   };
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
-    if (cart.length === 0) return;
+    if (e) e.preventDefault();
+    if (cart.length === 0 || !name || !phone || !address) return;
     setLoading(true);
 
     const orderData = {
