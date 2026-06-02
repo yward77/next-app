@@ -180,7 +180,7 @@ export default function ShopPage() {
                   </div>
                   <div className="px-2 pb-2">
                     <h3 className="text-[11px] font-light tracking-wide uppercase text-zinc-400 mb-1 truncate">{name}</h3>
-                    <p className="text-lg font-light text-amber-400">${price}</p>
+                    <p className="text-lg font-light text-amber-400">.LE{price}</p>
                   </div>
                 </div>
               );
